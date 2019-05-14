@@ -1,0 +1,31 @@
+{
+    "name": "moeje/je-back",
+    "description": "A middle providing API for score sharing application.",
+    "type": "project",
+    "keywords": ["api"],
+    "homepage": "http://www.moeje.com",
+    "license": "GPL-3.0+",
+    "minimum-stability": "dev",
+    "authors": [{
+        "name": "Zhang Zijing",
+        "email": "i@pluvet.com",
+        "homepage": "http://github.com/ZhangZijing",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": ">=5.3.3",
+        "phalapi/kernal": "2.*.*",
+        "phalapi/qrcode": "dev-master",
+        "phalapi/cli": "dev-master",
+        "phalapi/task": "dev-master"
+    },
+    "autoload": {
+        "files": [
+            "src/app/functions.php"
+        ],
+        "psr-4": {
+            "App\\": "src/app"
+        }
+    }
+
+}
