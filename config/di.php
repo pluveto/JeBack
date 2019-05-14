@@ -26,7 +26,7 @@ $di->debug = !empty($_GET['__debug__']) ? true : $di->config->get('sys.debug');
 // 日记纪录
 $di->logger = new FileLogger(API_ROOT . '/runtime', Logger::LOG_LEVEL_DEBUG | Logger::LOG_LEVEL_INFO | Logger::LOG_LEVEL_ERROR);
 
-// 数据操作 - 基于NotORM（注：支持多种数据库）
+// 数据操作 - 基于NotORM（注：支持多种数据库，默认使用 MySQL）
 $di->notorm = new NotORMDatabase($di->config->get('dbs'), $di->debug);
 
 // JSON中文输出
@@ -36,6 +36,9 @@ $di->response = new \PhalApi\Response\JsonResponse(JSON_UNESCAPED_UNICODE);
 
 // 重写地址，详见 `App\Common\Request` 的定义。
 $di->request = new App\Common\Request();
+
+// auth 验证模块
+$di->authLite = new \Phalapi\Auth\Lite();
 
 // 签名验证服务
 // $di->filter = new \PhalApi\Filter\SimpleMD5Filter();

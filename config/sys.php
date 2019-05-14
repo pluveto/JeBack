@@ -11,7 +11,7 @@ return array(
     /**
      * 默认环境配置
      */
-    'debug' => false,
+    'debug' => true,
 
     /**
      * MC缓存服务器参考配置
@@ -27,8 +27,8 @@ return array(
     'redis' => array(
         'host' => '127.0.0.1',
         'port' => 6379,
-	),
-	
+    ),
+
     /**
      * 加密
      */

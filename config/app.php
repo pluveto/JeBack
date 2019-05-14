@@ -39,6 +39,6 @@ return array(
         'auth_group' => 'auth_group', // 组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-组关系表
         'auth_rule' => 'auth_rule', // 权限规则表
-        'auth_not_check_user' => array(0) //跳过权限检测的用户
+        'auth_not_check_user' => array(-1) //跳过权限检测的用户
     )
 );
