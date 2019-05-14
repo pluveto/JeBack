@@ -1,34 +1,40 @@
 # JeScoreLibrary Api 中间件
 
 本系统提供曲谱分享系统系列接口。
-```
-验证
-    发送验证码               /auth/captch/phone
-    发送验证邮件             /auth/captch/email
-    手机注册                 /auth/register/phone
-    邮箱注册                 /auth/register/email
-    手机登录                 /auth/login/phone
-    邮箱登录                 /auth/login/email
-    刷新登录                 /auth/refresh
-    修改密码                 /auth/change_password
-    退出登录                 /auth/logout
-    获取登录状态             /auth/status
+
+请求流程：
+
+* 接口需要验证？
+    * 是：
+        向登录接口登录，成功后返回 `signature`
+
+
+* 验证
+    * 发送验证码               /auth/captch/phone
+    * 发送验证邮件             /auth/captch/email
+    * 手机注册                 /auth/register/phone
+    * 邮箱注册                 /auth/register/email
+    * 手机登录                 /auth/login/phone
+    * 邮箱登录                 /auth/login/email
+    * 刷新登录                 /auth/refresh
+    * 修改密码                 /auth/change_password
+    * 退出登录                 /auth/logout
+    * 获取登录状态             /auth/status
 
 对于资源，前几个为基本操作。后几个是从基本操作中抽离的操作。
 
-用户
-    创建一个用户             /user/add
-    编辑一个用户             /user/update
-    删除一个用户             /user/remove
-    获取指定用户             /user/:id
-    列出一些用户             /user/list
-    搜索一些用户             /user/search
+* 用户
+    *创建一个用户             /user/add
+    *编辑一个用户             /user/update
+    *删除一个用户             /user/remove
+    *获取指定用户             /user/:id
+    *列出一些用户             /user/list
+    * 搜索一些用户             /user/search
 
-    获取关注者               /user/followed
-    获取粉丝                 /user/follower
-    关注、取消关注用户       /user/follow
-
-    获取用户创建的谱册       
+    * 获取关注者               /user/followed
+    * 获取粉丝                 /user/follower
+    * 关注、取消关注用户       /user/follow
+    
 曲谱
     创建一个曲谱             /score/add
     编辑一个曲谱             /score/update
