@@ -1,5 +1,100 @@
 [
     {
+        "name": "nikic/fast-route",
+        "version": "v1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/FastRoute.git",
+            "reference": "b5f95749071c82a8e0f58586987627054400cdf6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nikic/FastRoute/zipball/b5f95749071c82a8e0f58586987627054400cdf6",
+            "reference": "b5f95749071c82a8e0f58586987627054400cdf6",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "time": "2017-01-19T11:35:12+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "FastRoute\\": "src/"
+            },
+            "files": [
+                "src/functions.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Nikita Popov",
+                "email": "nikic@php.net"
+            }
+        ],
+        "description": "Fast request router for PHP",
+        "keywords": [
+            "router",
+            "routing"
+        ]
+    },
+    {
+        "name": "phalapi/auth",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twodayw/auth.git",
+            "reference": "c75445fcf6d262f0b9c677ec0fe5de2a03041911"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twodayw/auth/zipball/c75445fcf6d262f0b9c677ec0fe5de2a03041911",
+            "reference": "c75445fcf6d262f0b9c677ec0fe5de2a03041911",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2018-10-13T08:29:21+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Phalapi\\Auth\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-or-later"
+        ],
+        "authors": [
+            {
+                "name": "twoday",
+                "email": "33392316@qq.com"
+            }
+        ],
+        "description": "基于phalapi2的auth扩展"
+    },
+    {
         "name": "phalapi/cli",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -49,6 +144,59 @@
             "cli",
             "phalapi",
             "phalapi-cli"
+        ]
+    },
+    {
+        "name": "phalapi/fast-route",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phalapi/fast-route.git",
+            "reference": "ef94e6a3764eef195b2d70a061bd656bf1b310e8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phalapi/fast-route/zipball/ef94e6a3764eef195b2d70a061bd656bf1b310e8",
+            "reference": "ef94e6a3764eef195b2d70a061bd656bf1b310e8",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://dl.laravel-china.org/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "nikic/fast-route": "1.2.0",
+            "php": ">=5.3.3"
+        },
+        "time": "2019-04-21T13:47:58+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "PhalApi\\FastRoute\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "Dogstar Huang",
+                "email": "chanzonghuang@gmail.com",
+                "homepage": "http://my.oschina.net/dogstar",
+                "role": "Developer"
+            }
+        ],
+        "description": "PhalApi 2.x 扩展类库 - FastRoute路由，可以通过配置实现自定义路由配置，从而轻松映射到PhalApi中的service接口服务。",
+        "homepage": "https://www.phalapi.net/",
+        "keywords": [
+            "fast-route",
+            "phalapi",
+            "phalapi-fast-route"
         ]
     },
     {

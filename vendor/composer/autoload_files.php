@@ -6,7 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '253c157292f75eb38082b5acb06f3f01' => $vendorDir . '/nikic/fast-route/src/functions.php',
     'b0655c4b47b25ec49f0e931fe41ab7a3' => $vendorDir . '/phalapi/kernal/src/bootstrap.php',
     '5cab427b0519bb4ddb2f894b03d1d957' => $vendorDir . '/phalapi/kernal/src/functions.php',
-    'dee36c56d6bb319b2a744b267373bb4b' => $baseDir . '/src/app/functions.php',
+    '30faba707b4e1a1c49de4016001cfe0a' => $baseDir . '/src/app/functions.php',
 );
