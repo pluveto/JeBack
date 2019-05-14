@@ -17,6 +17,8 @@ return array(
     ),
 
     /**
+     * ZhangZijing注：请问使用白名单功能，不要修改下面的代码。我们使用 Auth 模块进行更精细的验证。
+     * 
      * 接口服务白名单，格式：接口服务类名.接口服务方法名
      *
      * 示例：
@@ -28,4 +30,15 @@ return array(
     'service_whitelist' => array(
         'Site.Index',
     ),
+    /**
+     * Auth 模块
+     */
+    'auth' => array(
+        'auth_on' => true, // 认证开关
+        'auth_user' => 'user', // 用户信息表,
+        'auth_group' => 'auth_group', // 组数据表名
+        'auth_group_access' => 'auth_group_access', // 用户-组关系表
+        'auth_rule' => 'auth_rule', // 权限规则表
+        'auth_not_check_user' => array(0) //跳过权限检测的用户
+    )
 );

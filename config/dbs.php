@@ -15,9 +15,9 @@ return array(
         'db_master' => array(                       //服务器标记
             'type'      => 'mysql',                 //数据库类型，暂时只支持：mysql, sqlserver
             'host'      => '127.0.0.1',             //数据库域名
-            'name'      => 'phalapi',               //数据库名字
+            'name'      => 'moeje',               //数据库名字
             'user'      => 'root',                  //数据库用户名
-            'password'  => '',	                    //数据库密码
+            'password'  => 'root',                        //数据库密码
             'port'      => 3306,                    //数据库端口
             'charset'   => 'UTF8',                  //数据库字符集
         ),
@@ -29,7 +29,7 @@ return array(
     'tables' => array(
         //通用路由
         '__default__' => array(
-            'prefix' => 'tbl_',
+            'prefix' => 'je_',
             'key' => 'id',
             'map' => array(
                 array('db' => 'db_master'),
@@ -45,6 +45,6 @@ return array(
                 array('start' => 0, 'end' => 2, 'db' => 'db_master'),     //分表配置：array('start' => 开始下标, 'end' => 结束下标, 'db' => 服务器标记)
             ),
         ),
-         */
+     */
     ),
 );
