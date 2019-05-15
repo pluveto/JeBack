@@ -33,15 +33,22 @@ $di->notorm = new NotORMDatabase($di->config->get('dbs'), $di->debug);
 $di->response = new \PhalApi\Response\JsonResponse(JSON_UNESCAPED_UNICODE);
 
 /** ---------------- 定制注册 可选服务组件 ---------------- **/
+// 路由模块在 index.php 中已经预先注入。路由的配置见 config/app.php
 
 // 重写地址，详见 `App\Common\Request` 的定义。
 $di->request = new App\Common\Request();
 
 // url 帮助类
-$di->urlHelper = new App\Helper\UrlHelper\Lite();
+$di->urlHelper = new App\Helper\Url\Lite();
+
+// 系统邮件帮助类
+// $di->sysEmailHelper = new App\Helper\SysEmail\Lite();
 
 // auth 验证模块
 $di->authLite = new \Phalapi\Auth\Lite();
+
+// session 工具
+$di->session = new \PhalApi\Session\Lite();
 
 // 签名验证服务
 // $di->filter = new \PhalApi\Filter\SimpleMD5Filter();

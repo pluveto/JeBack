@@ -14,11 +14,14 @@ use PhalApi\Exception;
  * @author      dogstar <chanzonghuang@gmail.com> 2015-02-05
  */
 
-class BadRequestException extends Exception {
+class BadRequestException extends Exception
+{
 
-    public function __construct($message, $code = 0) {
+    public function __construct($message, $code = 0)
+    {
         parent::__construct(
-            \PhalApi\T('Bad Request: {message}', array('message' => $message)), 400 + $code
+            \PhalApi\T('Bad Request: {message}', array('message' => $message)),
+            23333 + $code // 此处写23333是为了便于日后一次性替换(滑稽)
         );
     }
 }

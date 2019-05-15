@@ -32,7 +32,7 @@
     * 创建一个用户             /user/add
     * 编辑一个用户             /user/update
     * 删除一个用户             /user/remove
-    * 获取指定用户             /user/:id
+    * 获取指定用户             /user
     * 列出一些用户             /user/list
     * 搜索一些用户             /user/search
 
@@ -44,15 +44,21 @@
     * 创建一个曲谱             /score/add
     * 编辑一个曲谱             /score/update
     * 删除一个曲谱             /score/remove
-    * 获取指定曲谱             /score/:id
+    * 获取指定曲谱             /score
     * 列出一些曲谱             /score/list
     * 搜索一些曲谱             /score/search
+
+    * 获取曲谱关联演奏         /score/performance
+    * 获取曲谱关联音乐         /score/music
+    * 获取收藏此曲谱的用户     使用用户 api
+    * 获取收录该曲谱的谱册     使用谱册 api
+
 
 * 谱册
     * 创建一个谱册             /collection/add
     * 列出一些谱册             /collection/list
     * 搜索一些谱册             /collection/search
-    * 获取一个谱册             /collection/:id
+    * 获取一个谱册             /collection
     * 编辑一个谱册             /collection/update
     * 删除一个谱册             /collection/remove
 
@@ -60,7 +66,7 @@
     * 创建一个标签             /tag/add
     * 列出一些标签             /tag/list
     * 搜索一些标签             /tag/search
-    * 获取一个标签             /tag/:id
+    * 获取一个标签             /tag
     * 编辑一个标签             /tag/update
     * 删除一个标签             /tag/remove
 
@@ -69,27 +75,27 @@
 
 * 曲谱的评论
     * 创建一个评论             /score_comment/add    
-    * 获取一个评论             /score_comment/:id
+    * 获取一个评论             /score_comment
     * 编辑一个评论             /score_comment/update
     * 删除一个评论             /score_comment/remove
 
 * 谱册的评论
     * 创建一个评论             /collection_comment/add    
-    * 获取一个评论             /collection_comment/:id
+    * 获取一个评论             /collection_comment
     * 编辑一个评论             /collection_comment/update
     * 删除一个评论             /collection_comment/remove
 
 * 曲谱的收藏
     * 创建一个收藏             /score_favorite/add    
     * 列出一些收藏             /score_favorite/list
-    * 获取一个收藏             /score_favorite/:id
+    * 获取一个收藏             /score_favorite
     * 编辑一个收藏             /score_favorite/update
     * 删除一个收藏             /score_favorite/remove
 
 * 谱册的收藏
     * 创建一个收藏             /collection_favorite/add    
     * 列出一些收藏             /collection_favorite/list
-    * 获取一个收藏             /collection_favorite/:id
+    * 获取一个收藏             /collection_favorite
     * 编辑一个收藏             /collection_favorite/update
     * 删除一个收藏             /collection_favorite/remove
 

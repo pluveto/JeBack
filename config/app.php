@@ -29,10 +29,7 @@ return array(
      * - *.Index     全部接口类的Index方法
      * - Site.Index  指定某个接口服务，即Api_Default::Index()
      */
-    'service_whitelist' => array(
-        'Site.Index',
-        'Auth.Index'
-    ),
+    'service_whitelist' => array(),
     /**
      * Auth 模块
      */
@@ -42,7 +39,7 @@ return array(
         'auth_group' => 'auth_group', // 组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-组关系表
         'auth_rule' => 'auth_rule', // 权限规则表
-        'auth_not_check_user' => array(-1) //跳过权限检测的用户
+        'auth_not_check_user' => array() //跳过权限检测的用户
     ),
     /**
      * 扩展类库 - 快速路由配置
@@ -57,11 +54,96 @@ return array(
          */
         'routes' => array(
             array('POST', '/', 'site.index'),
+            // auth
             array('POST', '/auth', 'auth.index'),
+            array('POST', '/auth/captch/phone', ''),
+            array('POST', '/auth/captch/email', 'auth.sendEmailCaptch'),
+            array('POST', '/auth/register/phone', ''),
+            array('POST', '/auth/register/email', 'auth.registerByEmail'),
+            array('POST', '/auth/login/phone', ''),
+            array('POST', '/auth/login/email', ''),
+            array('POST', '/auth/refresh', ''),
+            array('POST', '/auth/change_password', ''),
+            array('POST', '/auth/logout', ''),
+            array('POST', '/auth/status', ''),
+
+            // user
+            array('POST', '/user/add', ''),
+            array('POST', '/user/update', ''),
+            array('POST', '/user/remove', ''),
+            array('POST', '/user', ''),
+            array('POST', '/user/list', ''),
+            array('POST', '/user/search', ''),
+            array('POST', '/user/followed', ''),
+            array('POST', '/user/follower', ''),
+            array('POST', '/user/follow', ''),
+
+            // score
+            array('POST', '/score/add', ''),
+            array('POST', '/score/update', ''),
+            array('POST', '/score/remove', ''),
+            array('POST', '/score', ''),
+            array('POST', '/score/list', ''),
+            array('POST', '/score/search', ''),
+
+            array('POST', '/score/performance', ''),
+            array('POST', '/score/music', ''),
+
+            // collection
+            array('POST', '/collection/add', ''),
+            array('POST', '/collection/list', ''),
+            array('POST', '/collection/search', ''),
+            array('POST', '/collection', ''),
+            array('POST', '/collection/update', ''),
+            array('POST', '/collection/remove', ''),
+
+            // tag
+            array('POST', '/tag/add', ''),
+            array('POST', '/tag/list', ''),
+            array('POST', '/tag/search', ''),
+            array('POST', '/tag', ''),
+            array('POST', '/tag/update', ''),
+            array('POST', '/tag/remove', ''),
+
+            array('POST', '/tag/attach/add', ''),
+            array('POST', '/tag/attach/remove', ''),
+
+            // commment of score
+            array('POST', '/score_comment/add    ', ''),
+            array('POST', '/score_comment', ''),
+            array('POST', '/score_comment/update', ''),
+            array('POST', '/score_comment/remove', ''),
+
+            // comment of collection
+            array('POST', '/collection_comment/add    ', ''),
+            array('POST', '/collection_comment', ''),
+            array('POST', '/collection_comment/update', ''),
+            array('POST', '/collection_comment/remove', ''),
+
+            // favorite of score
+            array('POST', '/score_favorite/add    ', ''),
+            array('POST', '/score_favorite/list', ''),
+            array('POST', '/score_favorite', ''),
+            array('POST', '/score_favorite/update', ''),
+            array('POST', '/score_favorite/remove', ''),
+
+            //favorite of collection
+            array('POST', '/collection_favorite/add', ''),
+            array('POST', '/collection_favorite/list', ''),
+            array('POST', '/collection_favorite', ''),
+            array('POST', '/collection_favorite/update', ''),
+            array('POST', '/collection_favorite/remove', ''),
+
+            // follow
+            array('POST', '/follow/add', ''),
+            array('POST', '/follow/list', ''),
+            array('POST', '/follow/remove', ''),
+
+
         ),
         'base_url' => '/project/public'
     ),
     'url' => array(
-        'base_url' => 'http://je.test.com:2333/project/public'
+        'base_url' => '/project/public'
     )
 );

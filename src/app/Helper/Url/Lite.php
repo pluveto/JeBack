@@ -1,5 +1,5 @@
 <?php
-namespace App\Helper\UrlHelper;
+namespace App\Helper\Url;
 
 /**
  * URL 帮助类
@@ -19,7 +19,7 @@ class Lite
             isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
             $_SERVER['SERVER_NAME'],
             $_SERVER["SERVER_PORT"] == '80' ? '' : ':' . $_SERVER["SERVER_PORT"],
-            \PhalApi\DI()->config->get('app.FastRoute.base_url')
+            \PhalApi\DI()->config->get('app.url.base_url')
         );
     }
 }

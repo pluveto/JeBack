@@ -19,7 +19,9 @@
         "phalapi/cli": "dev-master",
         "phalapi/task": "dev-master",
         "phalapi/fast-route": "dev-master",
-        "phalapi/auth": "dev-master"
+        "phalapi/auth": "dev-master",
+        "nette/mail": "^3.0@dev",
+        "phalapi/session": "dev-master"
     },
     "autoload": {
         "files": [

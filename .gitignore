@@ -2,6 +2,8 @@ composer.lock
 
 runtime/*
 
+config/je.php
+
 public/docs
 
 public/uploads

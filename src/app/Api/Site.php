@@ -27,6 +27,8 @@ class Site extends Api
      */
     public function index()
     {
+        \PhalApi\DI()->sysEmailHelper->test();
+
         $base_url = \PhalApi\DI()->urlHelper->baseUrl();
         return array(
             'title' => 'Hello, Moe JE!',

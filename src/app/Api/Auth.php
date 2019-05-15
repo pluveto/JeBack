@@ -2,6 +2,9 @@
 namespace App\Api;
 
 use PhalApi\Api;
+use PhalApi\Exception\BadRequestException;
+
+use \App\Domain\Auth as Domain;
 
 /**
  * 用户验证、会话操作类
@@ -14,6 +17,13 @@ class Auth extends Api
     {
         return array(
             'index' => array(),
+            'loginByEmail' => array(
+                'email' => array('name' => 'email')
+            ),
+            //请勿在此处进行正则校验, 因为这样不利于自定义异常时返回结果.
+            'sendEmailCaptch' => array(
+                'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255)
+            )
         );
     }
 
@@ -37,5 +47,47 @@ class Auth extends Api
                 'site_index_url' => $base_url . "/site/index",
             )
         );
+    }
+
+    public function loginByEmail()
+    {
+        $base_url = \PhalApi\DI()->urlHelper->baseUrl();
+        return array(
+            'status' => 'Success!',
+        );
+    }
+    /**
+     * 发送邮件验证码. 不检查邮箱存在性.
+     * 
+     * 应用场景: 注册/异常登录验证/找回密码/更改密码/注销
+     *
+     * @return void
+     */
+    public function sendEmailCaptch()
+    {
+        $domain = new Domain();
+
+        // 检查格式
+        $this->email = trim($this->email);
+        if (!\App\Helper\Validator::checkEmailFormat($this->email)) {
+            throw new BadRequestException('邮箱格式错误');
+        }
+        // 如果距离上次发送时间不到 60 s, 则不允许发送验证码. 防止高频提交.
+        $lastSendTime = $domain->getLastCaptchSendTimestamp($this->email);
+
+        if (($lastSendTime != NULL)) {
+            $deltaTime = time() - $lastSendTime;
+            if ($deltaTime < 60) {
+                throw new BadRequestException("验证码请 求频率过高, 请 " . (60 - $deltaTime) . " 秒后再试");
+            }
+        }
+        //发送验证码
+        $domain->sendEmailCaptch(
+            $this->email,
+            $_SERVER['REMOTE_ADDR'],
+            array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : ''
+        );
+        //PS: 约定过期时间为 15 分钟, 请在
+        return null;
     }
 }
