@@ -2,7 +2,7 @@
 namespace App\Helper;
 
 /**
- * 校验帮助类
+ * 静态检查帮助类, 只能检查格式. 不要在这里对 Domain / Model 层进行访问.
  * @author ZhangZijing <i@pluvet.com> 2019-5-15
  */
 class Validator

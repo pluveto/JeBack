@@ -23,7 +23,13 @@ class Auth extends Api
             //请勿在此处进行正则校验, 因为这样不利于自定义异常时返回结果.
             'sendEmailCaptch' => array(
                 'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255)
+            ),
+            'registerByEmail' => array(
+                'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255),
+                'captch' => array('name' => 'captch', 'require' => true, 'min' => 6, 'max' => 6),
+                'password' => array('name' => 'password', 'require' => true, 'min' => 6, 'max' => 255),
             )
+
         );
     }
 
@@ -60,7 +66,11 @@ class Auth extends Api
      * 发送邮件验证码. 不检查邮箱存在性.
      * 
      * 应用场景: 注册/异常登录验证/找回密码/更改密码/注销
-     *
+     * 
+     * 所需参数: email
+     * 
+     * 路由: /auth/login/email
+     * 
      * @return void
      */
     public function sendEmailCaptch()
@@ -89,5 +99,42 @@ class Auth extends Api
         );
         //PS: 约定过期时间为 15 分钟, 请在
         return null;
+    }
+
+    /**
+     * 用户邮箱注册
+     * 
+     * 注册时将不可避免地用明文传参, 除非用非对称加密. 所以建议开启SSL.
+     * 
+     * 所需参数: email, captch, password
+     * 
+     * @return void
+     */
+    public function registerByEmail()
+    {
+        $domain = new Domain();
+        /** ------- email validating ------- */
+        // 检查格式
+        $this->email = trim($this->email);
+        if (!\App\Helper\Validator::checkEmailFormat($this->email)) {
+            throw new BadRequestException('邮箱格式错误');
+        }
+        // 检查可用性(重复)
+        if (!$domain->isEmailAvailable($this->email)) {
+            throw new BadRequestException('邮箱已被使用');
+        }
+        /** ------- captch validating ------- */
+        $this->captch = trim($this->captch);
+        $correctCaptch = $domain->getLastCaptch($this->email);
+        if ($correctCaptch == null) {
+            throw new BadRequestException('未发送验证码');
+        }
+        if ($this->captch != $correctCaptch) {
+            throw new BadRequestException('验证码错误或过期');
+        }
+        /** ------- password validating ------- */
+        // 密码不进行 trim()
+        /** ------- 完成注册 ------- */
+        $domain->registerUserByEmail($this->email, $this->password);
     }
 }
