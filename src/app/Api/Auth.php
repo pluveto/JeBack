@@ -4,10 +4,11 @@ namespace App\Api;
 use PhalApi\Api;
 
 /**
- * 默认接口服务类
- * @author: dogstar <chanzonghuang@gmail.com> 2014-10-04
+ * 用户验证、会话操作类
+ * 
+ * @author ZhangZijing <i@pluvet.com> 2019-5-15
  */
-class Site extends Api
+class Auth extends Api
 {
     public function getRules()
     {
@@ -29,14 +30,11 @@ class Site extends Api
     {
         $base_url = \PhalApi\DI()->urlHelper->baseUrl();
         return array(
-            'title' => 'Hello, Moe JE!',
+            'title' => 'Hello, Moe Auth!',
             'version' => '1.0.0',
             'time' => $_SERVER['REQUEST_TIME'],
             'urls' => array(
-                'site_index_url' => $base_url . "/",
-                'login_url' => $base_url . "/auth/login/email",
-                'register_url' => $base_url . "/auth/register"
-
+                'site_index_url' => $base_url . "/site/index",
             )
         );
     }

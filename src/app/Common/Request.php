@@ -9,6 +9,8 @@ namespace App\Common;
  * 
  * 提示：通过 Apache 或 Nginx 的进一步重写，可变成形如 `/Namespace/Class/Action`
  * 
+ * 注意：实际请求时，Namespace 不写，因为在下面进行了处理，自动加上 App 命名空间
+ * 
  * @author ZhangZijing <i@pluvet.com> 2019-5-14
  */
 class Request extends \PhalApi\Request
@@ -19,8 +21,9 @@ class Request extends \PhalApi\Request
         // 优先返回自定义格式的接口服务名称
         $service = $this->get('r');
         if (!empty($service)) {
-            $namespace = count(explode('/', $service)) == 2 ? 'App.' : '';
-            return $namespace . str_replace('/', '.', $service);
+            // 去除首尾的 "/"
+            $service = trim($service, "\/");
+            return 'App.' . str_replace('/', '.', $service);
         }
 
         return parent::getService();

@@ -17,7 +17,9 @@ return array(
     ),
 
     /**
-     * ZhangZijing注：请问使用白名单功能，不要修改下面的代码。我们使用 Auth 模块进行更精细的验证。
+     * ZhangZijing注：请不要使用白名单功能，不要修改下面的代码。
+     * 
+     * 我们使用 Auth 模块进行更精细的验证。
      * 
      * 接口服务白名单，格式：接口服务类名.接口服务方法名
      *
@@ -29,6 +31,7 @@ return array(
      */
     'service_whitelist' => array(
         'Site.Index',
+        'Auth.Index'
     ),
     /**
      * Auth 模块
@@ -40,5 +43,25 @@ return array(
         'auth_group_access' => 'auth_group_access', // 用户-组关系表
         'auth_rule' => 'auth_rule', // 权限规则表
         'auth_not_check_user' => array(-1) //跳过权限检测的用户
+    ),
+    /**
+     * 扩展类库 - 快速路由配置
+     */
+    'FastRoute' => array(
+        /**
+         * 格式：array($method, $routePattern, $handler)
+         *
+         * @param string/array $method 允许的HTTP请求方式，可以为：GET/POST/HEAD/DELETE 等
+         * @param string $routePattern 路由的正则表达式
+         * @param string $handler 对应PhalApi中接口服务名称，即：?service=$handler
+         */
+        'routes' => array(
+            array('POST', '/', 'site.index'),
+            array('POST', '/auth', 'auth.index'),
+        ),
+        'base_url' => '/project/public'
+    ),
+    'url' => array(
+        'base_url' => 'http://je.test.com:2333/project/public'
     )
 );

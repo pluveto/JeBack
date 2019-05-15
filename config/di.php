@@ -37,6 +37,9 @@ $di->response = new \PhalApi\Response\JsonResponse(JSON_UNESCAPED_UNICODE);
 // 重写地址，详见 `App\Common\Request` 的定义。
 $di->request = new App\Common\Request();
 
+// url 帮助类
+$di->urlHelper = new App\Helper\UrlHelper\Lite();
+
 // auth 验证模块
 $di->authLite = new \Phalapi\Auth\Lite();
 
