@@ -6,11 +6,49 @@ use PhalApi\Model\NotORMModel as NotORM;
 class Auth extends NotORM
 {
 
+    private const NONCE_TABLE = "auth_nonce";
+    private const CAPTCH_TALBE = "auth_captch";
+
     protected function getTableName($id)
     {
         return null;
     }
-
+    /**
+     * 获取 nonce
+     *
+     * @param string $nonce
+     * @return array nonce 的完整数组
+     */
+    public function getNonce($nonce)
+    {
+        $table = self::NONCE_TABLE;
+        $ormNonce = \PhalApi\DI()->notorm->$table;
+        return $ormNonce->where('nonce', $nonce)->fetchOne();
+    }
+    /**
+     * 删除 nonce
+     *
+     * @param string $nonce
+     * @return void
+     */
+    public function deleteNonce($nonce)
+    {
+        $table = self::NONCE_TABLE;
+        $ormNonce = \PhalApi\DI()->notorm->$table;
+        $ormNonce->where('nonce', $nonce)->delete();
+    }
+    /**
+     * 插入 Nonce
+     *
+     * @param array $data
+     * @return void
+     */
+    public function insertNonce($data)
+    {
+        $table = self::NONCE_TABLE;
+        $ormNonce = \PhalApi\DI()->notorm->$table;
+        $ormNonce->insert($data);
+    }
     /**
      * 插入验证码
      *
@@ -19,17 +57,25 @@ class Auth extends NotORM
      */
     public function insertCaptch($data)
     {
-        $table = 'auth_captch';
+        $table = self::CAPTCH_TALBE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         $ormCaptch->insert($data);
     }
 
     public function clearExpiredCaptch($type = 0)
     {
-        $table = 'auth_captch';
+        $table = self::CAPTCH_TALBE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         // 删除过期 15 分钟的.
         $ormCaptch->where('created_at < ?', time() - 900)->where('type', $type)->delete();
+    }
+
+    public function clearExpiredNonce()
+    {
+        $table = self::NONCE_TABLE;
+        $ormCaptch = \PhalApi\DI()->notorm->$table;
+        // 删除过期 30s 的.
+        $ormCaptch->where('created_at < ?', time() - 30)->delete();
     }
 
     /**
@@ -41,7 +87,7 @@ class Auth extends NotORM
      */
     public function getLastCaptch($type, $title)
     {
-        $table = 'auth_captch';
+        $table = self::CAPTCH_TALBE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         return $ormCaptch->where('created_at > ?', time() - 900)
             ->where('type', $type)

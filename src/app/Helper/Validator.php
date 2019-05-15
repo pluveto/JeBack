@@ -13,7 +13,7 @@ class Validator
      * @param string $mailAddress 邮箱地址
      * @return bool 正确返回true
      */
-    public static function checkEmailFormat($mailAddress)
+    public static function checkEmailFormat(string $mailAddress)
     {
         return preg_match('/^[_a-z0-9-\.]+@([-a-z0-9]+\.)+[a-z]{2,}$/i', $mailAddress);
     }

@@ -1,0 +1,47 @@
+[
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\src\\app\\Api",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\src\\app\\Api",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "It83Y90a1Z7EqeTG"
+    },
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\src\\app\\Domain",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\src\\app\\Domain",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "Huvt8cyKIY2erg5k"
+    },
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\src\\app\\Model",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\src\\app\\Model",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "XMhIKn7301omOQYs"
+    },
+    {
+        "type": "File",
+        "name": "a:\\src\\php\\je.test.com\\project\\config\\app.php",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\config\\app.php",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "5yrZpG71HaXdPSjo"
+    },
+    {
+        "type": "File",
+        "name": "a:\\src\\php\\je.test.com\\project\\config\\je.php",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\config\\je.php",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "3En0xOZlrNRaVJdF"
+    }
+]

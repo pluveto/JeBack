@@ -4,15 +4,95 @@ namespace App\Domain;
 use App\Model\Auth as Model;
 use App\Model\User as UserModel;
 
+/**
+ * Auth 校验 Domain 类
+ * 
+ * @author ZhangZijing <i@pluvet.com>
+ */
 class Auth
 {
 
+
+    /**
+     * 获取签名
+     *
+     * @param string $password
+     * @param string $nonce
+     * @return void
+     */
+    public function getSign(string $password, string $nonce)
+    {
+        return sha1($password . $nonce);
+    }
+    /**
+     * 删除无效的 Nonce, 然后检查 Nonce 是否存在并有效
+     *
+     * @return bool 是否有效. true 为是.
+     */
+    public function checkNonce(string $nonce)
+    {
+        $model = new Model();
+        $model->clearExpiredNonce();
+        $nonceArray = $model->getNonce($nonce);
+        // PS: 筛选下的 nonce 全为有效且未过期
+        if ($nonceArray == null) return false;
+        // 清除此次的 nonce
+        $nonceArray = $model->deleteNonce($nonce);
+
+        return true;
+    }
+
+    public function checkSignByEmailAndNonce(string $email, string $nonce, string $signToCheck)
+    {
+        $model = new UserModel();
+
+        $user = $model->getUserByEmail($email);
+        $expectedSign = $this->getSign($user['password'], $nonce);
+        return ($expectedSign == $signToCheck);
+    }
+
+
+    /**
+     * 为用户创建token
+     *
+     * @param string $email
+     * @return string token
+     */
+    public function setUpTokenByEmail(string $email)
+    {
+        $model = new UserModel();
+        $token = sha1(random_bytes(40));
+        return $model->updateUserTokenByEmail($email, $token);
+    }
+
+    /**
+     * 生成 Nounce, 同时删除过期的 Nonce
+     *
+     * @return string nonce
+     */
+    public function prepareNounce()
+    {
+        $model = new Model();
+        $model->clearExpiredNonce();
+
+        $nonce = sha1(random_bytes(32));
+        // PS: 还可以在其中增加 ip_ra 和 ip_xf 增加安全性.
+        $model->insertNonce(array(
+            'nonce' => $nonce,
+            'created_at' => time(),
+            'valid' => 1
+        ));
+        return $nonce;
+    }
     /**
      * 生成邮箱验证码, 并储存. 然后把验证码发到邮件.
      *
+     * @param string $email
+     * @param string $ip_ra
+     * @param string $ip_xf
      * @return void
      */
-    public function sendEmailCaptch($email, $ip_ra, $ip_xf)
+    public function sendEmailCaptch(string $email, string $ip_ra, string $ip_xf)
     {
         $model = new Model();
 
@@ -39,7 +119,7 @@ class Auth
      * @param string $email
      * @return int 时间戳, 查询不到则返回 null
      */
-    public function getLastCaptchSendTimestamp($email)
+    public function getLastCaptchSendTimestamp(string $email)
     {
         $model = new Model();
         // 先清理过期的验证码
@@ -59,7 +139,7 @@ class Auth
      * @param string $email
      * @return string 验证码, 查询不到则返回 null
      */
-    public function getLastCaptch($email)
+    public function getLastCaptch(string $email)
     {
         $model = new Model();
         // 先清理过期的验证码
@@ -78,18 +158,19 @@ class Auth
      * @param string $email
      * @return boolean 可用为 true
      */
-    public function isEmailAvailable($email)
+    public function isEmailAvailable(string $email)
     {
         $model = new UserModel();
         return $model->getUserByEmail($email) == null;
     }
 
-    public function registerUserByEmail($email, $password)
+    public function registerUserByEmail(string $email, string $password)
     {
         $model = new UserModel();
         $salt = \PhalApi\DI()->config->get('je.security.salt');
         // 加盐防止彩虹表攻击
-        $passwordSalted = sha1($salt . $email . $password);
+        // PS: 由于使用签名认证, 停止使用固定该 salt
+        $passwordSalted = sha1($email . $password);
         $model->addUser(array(
             'email' => $email,
             'password' => $passwordSalted

@@ -13,15 +13,33 @@ class User extends NotORM
      * 通过邮件地址获取一个用户
      *
      * @param string $email
-     * @return array()
+     * @return array
      */
-    public function getUserByEmail($email)
+    public function getUserByEmail(string $email)
     {
         return $this->getORM()->where('email', $email)->fetchOne();
     }
 
-    public function addUser($data)
+    /**
+     * 添加用户
+     *
+     * @param array $data 用户数据, 邮箱/手机号至少有一个, 密码必填.
+     * @return void
+     */
+    public function addUser(array $data)
     {
         return $this->getORM()->insert($data);
+    }
+
+    /**
+     * 更新具有指定邮箱的用户的 token
+     *
+     * @param string $email
+     * @param string $token
+     * @return void
+     */
+    public function updateUserTokenByEmail(string $email, string $token)
+    {
+        return $this->getORM()->update(['token' => $token])->where('email', $email);
     }
 }
