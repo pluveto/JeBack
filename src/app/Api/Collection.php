@@ -3,6 +3,9 @@ namespace App\Api;
 
 use PhalApi\Api;
 
+use \App\Domain\Collection as Domain;
+
+
 /**
  * 谱册API
  * @author LW <lw1020573989@live.com>
@@ -30,10 +33,14 @@ class Collection extends Api
      */
     public function addCollection()
     {
+        $domain = new Domain();
+
         $username = $this->username;
         $image = $this->image;
         $title = $this->title;
         $description = $this->description;
+
+        $domain->createCollection($username, $image, $title, $description);
     }
     public function list()
     { }

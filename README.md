@@ -1,47 +1,7 @@
-# JeScoreLibrary Api 中间件
+# JeScoreLibrary Api 中间件 (Bipubipu API 后端)
 
-## 参与开发指南
+**如果您要参与开发, 请务必阅读 [指南](https://github.com/pluveto/JeBack/wiki)**
 
-### 搭建环境
-
-需要的有: phpStudy(只是图方便), composer, Visual Studio Code
-
-下载 phpStudy 安装之后, 找到`php.exe`所在路径, 如`A:\ins\phpStudy\PHPTutorial\php\php-7.2.1-nts\`, 将其添加到环境变量.
-
-#### 如何添加到环境变量?
-
-按下 Win+S 搜索 PATH, 点选图示项:
-![](https://pluvet-1251765364.cos.ap-chengdu.myqcloud.com/IMAGES/20190516193321.png)
-
-打开后根据下图的指示, 把前面提到的路径增加进来, 保存.
-
-![](https://pluvet-1251765364.cos.ap-chengdu.myqcloud.com/IMAGES/20190516193715.png)
-
-#### 安装 composer
-
-这个点上
-
-![](https://pluvet-1251765364.cos.ap-chengdu.myqcloud.com/IMAGES/20190516194017.png)
-
-选之前的目录里的那个php.exe
-
-![](https://pluvet-1251765364.cos.ap-chengdu.myqcloud.com/IMAGES/20190516194103.png)
-
-#### 安装 VSCODE
-
-到官网下载安装即可.
-
-准备以下插件:
-
-* Braket Par Color
-* Favorites
-* indent-rainbow
-* **Live Share**
-* **PHP DocBlocker**
-* **PHP Intelephense**
-* **phpfmt**
-* **Team Chat for Slack**
-* VsCode Great Icons
 
 
 
@@ -50,7 +10,7 @@
 
 请求流程：
 
-* 接口需要验证？
+* 接口需要验证？//已变, 待更新
     * 是：
         1. 向登录接口登录，成功后返回 `token`
         2. 对 `token` 和参数排序，用摘要算法计算出 `signature`
