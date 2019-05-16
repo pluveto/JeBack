@@ -9,10 +9,15 @@ class Auth extends NotORM
     private const NONCE_TABLE = "auth_nonce";
     private const CAPTCH_TALBE = "auth_captch";
 
+
+
     protected function getTableName($id)
     {
         return null;
     }
+
+
+
     /**
      * 获取 nonce
      *

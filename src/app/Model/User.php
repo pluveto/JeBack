@@ -10,8 +10,20 @@ use PhalApi\Model\NotORMModel as NotORM;
 class User extends NotORM
 {
     /**
+     * 通过用户名获取一个用户
+     *
+     * @author ZhangZijing <i@pluvet.com>
+     * @param string $email
+     * @return array
+     */
+    public function getUserByUsername(string $username)
+    {
+        return $this->getORM()->where('username', $username)->fetchOne();
+    }
+    /**
      * 通过邮件地址获取一个用户
      *
+     * @author ZhangZijing <i@pluvet.com>
      * @param string $email
      * @return array
      */
@@ -22,7 +34,7 @@ class User extends NotORM
 
     /**
      * 添加用户
-     *
+     * @author ZhangZijing <i@pluvet.com>
      * @param array $data 用户数据, 邮箱/手机号至少有一个, 密码必填.
      * @return void
      */
@@ -34,6 +46,7 @@ class User extends NotORM
     /**
      * 更新具有指定邮箱的用户的 token
      *
+     * @author ZhangZijing <i@pluvet.com>
      * @param string $email
      * @param string $token
      * @return void
@@ -41,6 +54,21 @@ class User extends NotORM
     public function updateUserTokenByEmail(string $email, string $token)
     {
         return $this->getORM()->where('email', $email)->update(
+            array('token' => $token)
+        );
+    }
+
+    /**
+     * 通过username 更新用户的 token
+     * 
+     * @param string $username
+     * @param string $token
+     * @author LW <lw1020573989@live.com>
+     * @return void
+     */
+    public function updateToken(string $username, string $token)
+    {
+        return $this->getORM()->where('username', $username)->update(
             array('token' => $token)
         );
     }

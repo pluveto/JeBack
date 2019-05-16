@@ -44,8 +44,12 @@ $di->urlHelper = new App\Helper\Url\Lite();
 // 系统邮件帮助类
 // $di->sysEmailHelper = new App\Helper\SysEmail\Lite();
 
-// auth 验证模块
+// auth 验证模块, 与自定义过滤器协作才会生效
 $di->authLite = new \Phalapi\Auth\Lite();
+
+// 自定义过滤器, 进行权限过滤
+
+$di->filter = new \App\Common\SignFilter();
 
 // session 工具
 $di->session = new \PhalApi\Session\Lite();

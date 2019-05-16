@@ -6,8 +6,10 @@ use PhalApi\Api;
 /**
  * 用户模块接口服务
  */
-class User extends Api {
-    public function getRules() {
+class User extends Api
+{
+    public function getRules()
+    {
         return array(
             'login' => array(
                 'username' => array('name' => 'username', 'require' => true, 'min' => 1, 'max' => 50, 'desc' => '用户名'),
@@ -21,11 +23,12 @@ class User extends Api {
      * @return boolean is_login 是否登录成功
      * @return int user_id 用户ID
      */
-    public function login() {
+    public function login()
+    {
         $username = $this->username;   // 账号参数
         $password = $this->password;   // 密码参数
         // 更多其他操作……
 
         return array('is_login' => true, 'user_id' => 8);
     }
-} 
+}

@@ -213,4 +213,18 @@ class Auth extends Api
 
         return array();
     }
+
+
+    /**
+     * 用户注销
+     * 
+     */
+    public function logout()
+    {
+        $domain = new Domain();
+
+        $this->username = trim($this->username);
+
+        $domain->clearToken($this->username);
+    }
 }

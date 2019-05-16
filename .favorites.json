@@ -52,5 +52,23 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "42TO6dxPhlH7UVDr"
+    },
+    {
+        "type": "File",
+        "name": "a:\\src\\php\\je.test.com\\project\\config\\di.php",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\config\\di.php",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "DGcHj4hKURbuqFnm"
+    },
+    {
+        "type": "File",
+        "name": "a:\\src\\php\\je.test.com\\project\\README.md",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\README.md",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "oP1m7VTJdNvya0YG"
     }
 ]

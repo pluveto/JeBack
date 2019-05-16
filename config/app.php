@@ -17,9 +17,9 @@ return array(
     ),
 
     /**
-     * ZhangZijing注：请不要使用白名单功能，不要修改下面的代码。
+     * 此处填写公共接口, 任何人都能自由访问
      * 
-     * 我们使用 Auth 模块进行更精细的验证。
+     * 对于用户组等, 我们使用 Auth 模块进行更精细的验证。
      * 
      * 接口服务白名单，格式：接口服务类名.接口服务方法名
      *
@@ -29,7 +29,12 @@ return array(
      * - *.Index     全部接口类的Index方法
      * - Site.Index  指定某个接口服务，即Api_Default::Index()
      */
-    'service_whitelist' => array(),
+    'service_whitelist' => array(
+        'site.index',
+        'auth.getNonce',
+        'auth.loginByEmail',
+        'auth.registerByEmail'
+    ),
     /**
      * Auth 模块
      */
@@ -65,7 +70,7 @@ return array(
             array('POST', '/auth/login/email', 'auth.loginByEmail'),
             array('POST', '/auth/refresh', ''),
             array('POST', '/auth/change_password', ''),
-            array('POST', '/auth/logout', ''),
+            array('POST', '/auth/logout', 'auth.logout'),
             array('POST', '/auth/status', ''),
 
             // user

@@ -11,17 +11,45 @@ use App\Model\User as UserModel;
  */
 class Auth
 {
-
+    /**
+     * 协助 AuthLite 模块进行权限检查. 请确保用户存在.
+     *
+     * @param string $api
+     * @param string $username
+     * @return bool 通过检查返回 true
+     */
+    public function checkAuth($api, $username)
+    {
+        $model = new UserModel();
+        $user = $model->getUserByUsername($username);
+        $userId = $user['id'];
+        return \PhalApi\DI()->authLite->check($api, $userId);
+    }
+    /**
+     * 计算常规签名
+     *
+     * @param string $timestamp
+     * @param string $username
+     * @return void
+     */
+    public function getSign(string $timestamp, string $username)
+    {
+        // 查找用户, 取出其 token
+        $model = new UserModel();
+        $user = $model->getUserByUsername($username);
+        $token = $user['token'];
+        return sha1($timestamp . $username . $token);
+    }
 
     /**
-     * 获取签名
+     * 计算登录签名
      * 
      * @param string $password 摘要后的密码
      * @param string $title email 或 手机号
      * @param string $nonce 有效随机串
      * @return void
      */
-    public function getSign(string $nonce, $title, string $password)
+    public function getLoginSign(string $nonce, $title, string $password)
     {
         return sha1($nonce . $title . $password);
     }
@@ -56,7 +84,7 @@ class Auth
         $model = new UserModel();
 
         $user = $model->getUserByEmail($email);
-        $expectedSign = $this->getSign($nonce, $email, $user['password']);
+        $expectedSign = $this->getLoginSign($nonce, $email, $user['password']);
         return ($expectedSign == $signToCheck);
     }
 
@@ -199,5 +227,14 @@ class Auth
         // 删除该邮箱的验证码
         $authModel = new Model();
         $authModel->clearUserCaptch($email, 0);
+    }
+
+    /**
+     * 通过邮箱清理token
+     */
+    public function clearToken($username)
+    {
+        $model = new UserModel();
+        $model->updateToken($username, '');
     }
 }
