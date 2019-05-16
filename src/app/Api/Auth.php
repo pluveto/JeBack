@@ -25,9 +25,10 @@ class Auth extends Api
                 'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255)
             ),
             'registerByEmail' => array(
-                'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255),
+                'username' => array('name' => 'username', 'require' => true, 'min' => 0, 'max' => 24),
+                'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 64),
                 'captch' => array('name' => 'captch', 'require' => true, 'min' => 6, 'max' => 6),
-                'password' => array('name' => 'password', 'require' => true, 'min' => 6, 'max' => 255),
+                'password' => array('name' => 'password', 'require' => true, 'min' => 6, 'max' => 255)
             ),
             'loginByEmail' => array(
                 'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255),
@@ -56,7 +57,7 @@ class Auth extends Api
             'version' => '1.0.0',
             'time' => $_SERVER['REQUEST_TIME'],
             'urls' => array(
-                'site_index_url' => $base_url . "/site/index",
+                'site_index_url' => $base_url . "/",
             )
         );
     }
@@ -82,14 +83,14 @@ class Auth extends Api
      * 登录过程:
      * 
      * 1. 用户从服务器获取一个随机串 nonce。服务器保存 nouce+timestamp
-     * 2. 用户计算 sign = sha1(sha1(email + password) + nouce).
-     * 3. 提交 sign, email, nonce, type=0(表示邮箱登录)
+     * 2. 用户计算 sign = sha1(nonce.email.sha1('moeje'.password)).
+     *    注意: 此处的 sign 为登录专用, 其它请求的 sign 的算法为: sha1(timestamp + username + token)
+     * 3. 提交 sign, email, nonce
      * 4. 服务器判断 nonce 是否过期, 如果没过期, 继续进行其他验证
      * 4. 登录成功，得到 token（有效期为30天，若主动注销则立刻过期）。
      * 5. 利用 token 可以实现免登录。
-     * 6. 为了防止重播攻击，每次请求, 传入sign = sha1(sha1(timestamp) + token + username) 和 timestamp 以及其它参数
      * 
-     * 所需参数: email, password, nonce, sign
+     * 所需参数: email, nonce, sign
      * 
      * @return void
      */
@@ -113,7 +114,9 @@ class Auth extends Api
             throw new BadRequestException('请求随机串错误');
         }
         /** ------- 密码检查 ------- */
-        if (!$domain->checkSignByEmailAndNonce($this->email, $this->nonce, $this->sign)) {
+        // TODO: 有可能用户先用手机号注册, 之后绑定邮箱用邮箱登录
+        //       这种情况下传入的sign是用邮箱加密的. 解决方法: 密码只用SHA1加密或公开salt.
+        if (!$domain->checkLoginSignByEmailAndNonce($this->email, $this->nonce, $this->sign)) {
             throw new BadRequestException('请求签名错误');
         }
 
@@ -122,7 +125,7 @@ class Auth extends Api
         );
     }
     /**
-     * 发送邮件验证码. 不检查邮箱存在性.
+     * 发送邮件验证码. 不检查邮箱存在性. 已注册的用户也可以接收验证码.
      * 
      * 应用场景: 注册/异常登录验证/找回密码/更改密码/注销
      * 
@@ -168,19 +171,25 @@ class Auth extends Api
      * 
      * 注册时将不可避免地用明文传参, 除非用非对称加密. 所以建议开启SSL.
      * 
-     * 所需参数: email, captch, password
+     * 所需参数: username, email, captch, password
      * 
      * @return void
      */
     public function registerByEmail()
     {
         $domain = new Domain();
-        /** ------- email validating ------- */
-        // 检查格式
+        /** ============== 格式检查 ============== */
+        /** ------- 用户名检查 ------- */
+        $this->username = trim($this->username);
+        if (!\App\Helper\Validator::checkUsernameFormat($this->username)) {
+            throw new BadRequestException('用户名格式错误, 请检查用户名格式是否正确. 只可以含有?.@_所有中英文和emoji.');
+        }
+        /** ------- 邮箱检查   ------- */
         $this->email = trim($this->email);
         if (!\App\Helper\Validator::checkEmailFormat($this->email)) {
-            throw new BadRequestException('邮箱格式错误');
+            throw new BadRequestException('邮箱格式错误, 必须形如 username@website.domain 的格式');
         }
+        /** ============== 正式检查 ============== */
         // 检查可用性(重复)
         if (!$domain->isEmailAvailable($this->email)) {
             throw new BadRequestException('邮箱已被使用');
@@ -197,9 +206,10 @@ class Auth extends Api
         /** ------- password validating ------- */
         // 密码不进行 trim()
         /** ------- 完成注册 ------- */
-        $domain->registerUserByEmail($this->email, $this->password);
+        $domain->registerUserByEmail($this->username, $this->email, $this->password);
 
-        \PhalApi\DI()->response->setMsg("注册成功");
+        // 目前规定, 失败才返回消息
+        //\PhalApi\DI()->response->setMsg("注册成功");
 
         return array();
     }

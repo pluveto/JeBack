@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "frisby": "^2.1.1",
+    "jest": "^22.4.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

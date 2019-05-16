@@ -40,6 +40,8 @@ class User extends NotORM
      */
     public function updateUserTokenByEmail(string $email, string $token)
     {
-        return $this->getORM()->update(['token' => $token])->where('email', $email);
+        return $this->getORM()->where('email', $email)->update(
+            array('token' => $token)
+        );
     }
 }

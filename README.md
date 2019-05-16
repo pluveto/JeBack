@@ -1,5 +1,7 @@
 # JeScoreLibrary Api 中间件
 
+测试用 token: 6d9aa35c5f58dd829f304349db05e0da8267a950
+
 本系统提供曲谱分享系统系列接口。
 
 请求流程：

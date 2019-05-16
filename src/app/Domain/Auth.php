@@ -15,14 +15,15 @@ class Auth
 
     /**
      * 获取签名
-     *
-     * @param string $password
-     * @param string $nonce
+     * 
+     * @param string $password 摘要后的密码
+     * @param string $title email 或 手机号
+     * @param string $nonce 有效随机串
      * @return void
      */
-    public function getSign(string $password, string $nonce)
+    public function getSign(string $nonce, $title, string $password)
     {
-        return sha1($password . $nonce);
+        return sha1($nonce . $title . $password);
     }
     /**
      * 删除无效的 Nonce, 然后检查 Nonce 是否存在并有效
@@ -42,18 +43,26 @@ class Auth
         return true;
     }
 
-    public function checkSignByEmailAndNonce(string $email, string $nonce, string $signToCheck)
+    /**
+     * 检查登录签名
+     *
+     * @param string $email
+     * @param string $nonce
+     * @param string $signToCheck
+     * @return bool 是否和预期一致(即是否正确), 是为true
+     */
+    public function checkLoginSignByEmailAndNonce(string $email, string $nonce, string $signToCheck)
     {
         $model = new UserModel();
 
         $user = $model->getUserByEmail($email);
-        $expectedSign = $this->getSign($user['password'], $nonce);
+        $expectedSign = $this->getSign($nonce, $email, $user['password']);
         return ($expectedSign == $signToCheck);
     }
 
 
     /**
-     * 为用户创建token
+     * 为用户创建 token
      *
      * @param string $email
      * @return string token
@@ -62,7 +71,8 @@ class Auth
     {
         $model = new UserModel();
         $token = sha1(random_bytes(40));
-        return $model->updateUserTokenByEmail($email, $token);
+        $model->updateUserTokenByEmail($email, $token);
+        return $token;
     }
 
     /**
@@ -96,8 +106,10 @@ class Auth
     {
         $model = new Model();
 
-        //清理过期的验证码
+        // 清理过期的验证码
         $model->clearExpiredCaptch();
+        // 清理已发送到改邮箱的验证码
+        $model->clearUserCaptch($email, 0);
         //TODO: 限制 ip 发送时长(一般60s), 统计发送次数, 超过5次失败则不再向该客户端发送验证码
         // 生成一个 6 位验证码
         $captch = mt_rand(100000, 999999);
@@ -164,16 +176,28 @@ class Auth
         return $model->getUserByEmail($email) == null;
     }
 
-    public function registerUserByEmail(string $email, string $password)
+    /**
+     * 通过邮箱注册用户
+     * 
+     * @param string $email
+     * @param string $password 明文密码
+     * @return void
+     */
+    public function registerUserByEmail(string $username, string $email, string $password)
     {
         $model = new UserModel();
         $salt = \PhalApi\DI()->config->get('je.security.salt');
-        // 加盐防止彩虹表攻击
-        // PS: 由于使用签名认证, 停止使用固定该 salt
-        $passwordSalted = sha1($email . $password);
+        // 由于登录时密码非明文传输, 此处的salt实际上暴露在了客户端
+        $passwordSalted = sha1("moeje" . $password);
         $model->addUser(array(
+            'username' => $username,
             'email' => $email,
-            'password' => $passwordSalted
+            'password' => $passwordSalted,
+            'created_at' => time(),
+            'updated_at' => time()
         ));
+        // 删除该邮箱的验证码
+        $authModel = new Model();
+        $authModel->clearUserCaptch($email, 0);
     }
 }

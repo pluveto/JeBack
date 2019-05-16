@@ -12,3 +12,5 @@ gitc
 
 .idea/
 .env
+
+tests/node_modules/

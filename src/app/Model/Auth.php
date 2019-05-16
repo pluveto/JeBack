@@ -69,6 +69,20 @@ class Auth extends NotORM
         // 删除过期 15 分钟的.
         $ormCaptch->where('created_at < ?', time() - 900)->where('type', $type)->delete();
     }
+    /**
+     * 清除某邮箱下的验证码
+     *
+     * @param string $email
+     * @param integer $type
+     * @return void
+     */
+    public function clearUserCaptch(string $title, int $type)
+    {
+        $table = self::CAPTCH_TALBE;
+        $ormCaptch = \PhalApi\DI()->notorm->$table;
+        // 删除过期 15 分钟的.
+        $ormCaptch->where('title', $title)->where('type', $type)->delete();
+    }
 
     public function clearExpiredNonce()
     {
