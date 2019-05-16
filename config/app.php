@@ -32,6 +32,7 @@ return array(
     'service_whitelist' => array(
         'site.index',
         'auth.getNonce',
+        'auth.getCaptchByEmail',
         'auth.loginByEmail',
         'auth.registerByEmail'
     ),
@@ -63,7 +64,7 @@ return array(
             array('POST', '/auth', 'auth.index'),
             array('POST', '/auth/nonce', 'auth.getNonce'),
             array('POST', '/auth/captch/phone', ''),
-            array('POST', '/auth/captch/email', 'auth.sendEmailCaptch'),
+            array('POST', '/auth/captch/email', 'auth.getCaptchByEmail'),
             array('POST', '/auth/register/phone', ''),
             array('POST', '/auth/register/email', 'auth.registerByEmail'),
             array('POST', '/auth/login/phone', ''),

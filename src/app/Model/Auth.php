@@ -8,6 +8,7 @@ class Auth extends NotORM
 
     private const NONCE_TABLE = "auth_nonce";
     private const CAPTCH_TALBE = "auth_captch";
+    private const GROUP_ACCESS_TABLE = "auth_group_access";
 
 
 
@@ -16,7 +17,19 @@ class Auth extends NotORM
         return null;
     }
 
-
+    public function setUserGroup($userId, $group)
+    {
+        $table = self::GROUP_ACCESS_TABLE;
+        $ormGroup = \PhalApi\DI()->notorm->$table;
+        return $ormGroup->insert_update(
+            array('uid' => $userId),
+            array(
+                'uid' => $userId,
+                'group_id' => $group,
+            ),
+            array('group_id' => $group)
+        );
+    }
 
     /**
      * 获取 nonce

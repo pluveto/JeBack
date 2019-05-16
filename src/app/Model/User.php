@@ -9,6 +9,8 @@ use PhalApi\Model\NotORMModel as NotORM;
  */
 class User extends NotORM
 {
+
+
     /**
      * 通过用户名获取一个用户
      *
@@ -36,7 +38,7 @@ class User extends NotORM
      * 添加用户
      * @author ZhangZijing <i@pluvet.com>
      * @param array $data 用户数据, 邮箱/手机号至少有一个, 密码必填.
-     * @return void
+     * @return array 插入的用户(若失败, 返回false)
      */
     public function addUser(array $data)
     {

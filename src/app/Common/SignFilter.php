@@ -13,12 +13,13 @@ class SignFilter implements Filter
     public function check()
     {
         $api = \PhalApi\DI()->request->get('service'); //获取当前访问的接口
-        //首先对签名进行检查
+        // 首先对签名进行检查
         SignFilter::_sign_check();
-        //再让 Auth 模块进行权限检查
-        SignFilter::_auth_check();
+        // 再让 Auth 模块进行权限检查. 若有返回, 必为有效用户.
+        $user = SignFilter::_auth_check();
 
-        return true;
+        // 验权通过, 为currentUser属性赋值(唯一赋值处)
+        \App\Domain\Auth::$currentUser = $user;
     }
 
     private function _sign_check()
@@ -49,13 +50,15 @@ class SignFilter implements Filter
     {
         $domain = new \App\Domain\Auth();
         //获取当前访问的接口, 此处已经是转换后的路由, 即 service.action格式
-        $api = \PhalApi\DI()->request->get('service');
-        if ($api == null) {
+        $service = \PhalApi\DI()->request->get('service');
+        if ($service == null) {
             throw new BadRequestException('错误接口');
         }
         $username = trim(\PhalApi\DI()->request->get('username'));
-        if (!$domain->checkAuth($api, $username)) {
+        $checkResult = $domain->checkAuth($service, $username);
+        if ($checkResult == false) {
             throw new BadRequestException('权限不足');
         }
+        return $checkResult;
     }
 }

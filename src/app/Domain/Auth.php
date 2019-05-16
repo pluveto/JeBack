@@ -11,20 +11,23 @@ use App\Model\User as UserModel;
  */
 class Auth
 {
+
     /**
-     * 协助 AuthLite 模块进行权限检查. 请确保用户存在.
+     * 当前登录用户
+     * 
+     * 一旦用户访问, 并检查签名通过后, 就会将此处赋值.
+     * 具体来说, 这个属性只在 SignFilter 进行复制
+     * 
+     * 禁止修改!!!
+     * 
+     * 不必判断这里是否为 null, 因为所有调用该属性的方法, 
+     * 必然是经过前置签名检查的方法, 所以必然已经登录, 
+     * 因而必然已经被赋值.
      *
-     * @param string $api
-     * @param string $username
-     * @return bool 通过检查返回 true
+     * @var array
      */
-    public function checkAuth($api, $username)
-    {
-        $model = new UserModel();
-        $user = $model->getUserByUsername($username);
-        $userId = $user['id'];
-        return \PhalApi\DI()->authLite->check($api, $userId);
-    }
+    public static $currentUser = null;
+
     /**
      * 计算常规签名
      *
@@ -53,6 +56,39 @@ class Auth
     {
         return sha1($nonce . $title . $password);
     }
+
+    /**
+     * 协助 AuthLite 模块进行权限检查. 请确保用户存在.
+     * AuthLite 权限检查流程说明: 
+     *   获取用户需要验证的所有有效规则列表:
+     *      查询用户在哪个组, 查询这个组对应了哪些规则, 对于每条数据库中存的规则:
+     *          如果规则设置了 condition:
+     *              把condition中的{xxx}格式的字符串替换为用户的xxx字段, 即user['xxx']
+     *              然后把condition解析为php代码, 添加到内存的规则列表
+     *          如果规则没设置 condition
+     *              直接向规则列表添加服务名
+     *      如果用户满足规则中的任何一条, 返回true(默认)
+     *      或者: 如果用户满足规则中的每一条, 才返回true(参数 3 = and)
+     * @param string $api
+     * @param string $username
+     * @return mixed 成功返回用户, 失败返回false
+     */
+    public function checkAuth($service, $username, $strict = false)
+    {
+        $model = new UserModel();
+        $user = $model->getUserByUsername($username);
+        $userId = $user['id'];
+        $mode = 'or';
+        if ($strict) {
+            $mode = 'and';
+        }
+        if (!\PhalApi\DI()->authLite->check($service, $userId)) {
+            return false;
+        }
+        return $user;
+    }
+
+
     /**
      * 删除无效的 Nonce, 然后检查 Nonce 是否存在并有效
      *
@@ -85,7 +121,7 @@ class Auth
 
         $user = $model->getUserByEmail($email);
         $expectedSign = $this->getLoginSign($nonce, $email, $user['password']);
-        return ($expectedSign == $signToCheck);
+        return $expectedSign == $signToCheck;
     }
 
 
@@ -207,25 +243,31 @@ class Auth
     /**
      * 通过邮箱注册用户
      * 
+     * @param string $username
      * @param string $email
      * @param string $password 明文密码
+     * @param int $group 1 为普通用户, 2为管理员. 由于一个用户可以对应多组, 表不设计为单射.
      * @return void
      */
-    public function registerUserByEmail(string $username, string $email, string $password)
+    public function registerUserByEmail(string $username, string $email, string $password, $group = 1)
     {
         $model = new UserModel();
         $salt = \PhalApi\DI()->config->get('je.security.salt');
         // 由于登录时密码非明文传输, 此处的salt实际上暴露在了客户端
         $passwordSalted = sha1("moeje" . $password);
-        $model->addUser(array(
+        $user = $model->addUser(array(
             'username' => $username,
             'email' => $email,
             'password' => $passwordSalted,
             'created_at' => time(),
             'updated_at' => time()
+            // 注意: 用户组不在此表
         ));
-        // 删除该邮箱的验证码
+
+
         $authModel = new Model();
+        $authModel->setUserGroup($user['id'], $group);
+        // 删除该邮箱的验证码
         $authModel->clearUserCaptch($email, 0);
     }
 

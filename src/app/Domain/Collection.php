@@ -42,29 +42,84 @@ class Collection
 
 
     /**
-     * 向谱册加入谱子
+     * 向谱册加入一个谱子
      * 
-     * @param array||num scoreId
-     * @param num collectionId 
+     * @param int scoreId
+     * @param int collectionId 
      */
     public function addScoreToCollection($scoreId, $collectionId)
     {
         $collcetionModel = new CollectionModel();
-
-        if (is_array($scoreId)) {
-            for ($i = 0; $i < count($scoreId); $i++) {
-                $data = array(
-                    'collection_id' => $collectionId,
-                    'score_id' => $scoreId[i]
-                );
-                $collcetionModel->addScoreToCollection($data);
-            }
-        }
 
         $data = array(
             'collection_id' => $collectionId,
             'score_id' => $scoreId
         );
         $collcetionModel->addScoreToCollection($data);
+    }
+    /**
+     * 向谱册加入一些谱子
+     * 
+     * @param array scoreId
+     * @param int collectionId 
+     */
+    public function addScoresToCollection($scoreIdList, $collectionId)
+    {
+        $collcetionModel = new CollectionModel();
+
+        $data = array();
+        for ($i = 0; $i < count(scoreIdList); $i++) {
+            $data[] = ['collection_id' => $collectionId, 'score_id' => $scoreIdList[i]];
+        }
+        $collcetionModel->addScoresToCollection($data);
+    }
+
+    /**
+     * 获取指定谱册
+     * 
+     * @param int collectionId
+     */
+    public function getCollection($collectionId)
+    {
+        $collcetionModel = new CollectionModel();
+        return $collcetionModel->getCollection($collectionId);
+    }
+
+    /**
+     * 删除指定谱册(软删除) 将状态从status 0 =>1
+     * @param int collectionId
+     */
+    public function removeCollection($collectionId)
+    {
+        $collcetionModel = new CollectionModel();
+        $data = array(
+            'id' => $collectionId,
+            'status' => 1
+        );
+        $collcetionModel->changeCollectionStatus($data);
+    }
+
+    /**
+     * 获取谱册列表
+     * @param int page 当前页码
+     * @param int pageSize 一页多少谱册
+     * @ 0代表可见谱册
+     */
+    public function getList($page, $pageSize)
+    {
+        $collcetionModel = new CollectionModel();
+        return $collcetionModel->getList($page, $pageSize, 0);
+    }
+
+
+    /**
+     *  根据谱册名 进行搜索
+     * @param string title
+     * @return 相关谱册列表
+     */
+    public function search($title)
+    {
+        $collcetionModel = new CollectionModel();
+        return $collcetionModel->searchByName($title);
     }
 }

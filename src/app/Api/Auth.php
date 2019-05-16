@@ -21,7 +21,7 @@ class Auth extends Api
                 'email' => array('name' => 'email')
             ),
             //请勿在此处进行正则校验, 因为这样不利于自定义异常时返回结果.
-            'sendEmailCaptch' => array(
+            'getCaptchByEmail' => array(
                 'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255)
             ),
             'registerByEmail' => array(
@@ -35,6 +35,9 @@ class Auth extends Api
                 'nonce' => array('name' => 'nonce', 'require' => true),
                 'sign' => array('name' => 'sign', 'require' => true),
                 'captch' => array('name' => 'captch', 'require' => false, 'min' => 6, 'max' => 6), // 账号异常时使用验证码登录                
+            ),
+            'logout' => array(
+                'username' => array('name' => 'username')
             )
 
         );
@@ -135,7 +138,7 @@ class Auth extends Api
      * 
      * @return void
      */
-    public function sendEmailCaptch()
+    public function getCaptchByEmail()
     {
         $domain = new Domain();
 
@@ -206,7 +209,7 @@ class Auth extends Api
         /** ------- password validating ------- */
         // 密码不进行 trim()
         /** ------- 完成注册 ------- */
-        $domain->registerUserByEmail($this->username, $this->email, $this->password);
+        $domain->registerUserByEmail($this->username, $this->email, $this->password, 1);
 
         // 目前规定, 失败才返回消息
         //\PhalApi\DI()->response->setMsg("注册成功");
@@ -222,9 +225,7 @@ class Auth extends Api
     public function logout()
     {
         $domain = new Domain();
-
         $this->username = trim($this->username);
-
         $domain->clearToken($this->username);
     }
 }
