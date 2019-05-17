@@ -6,6 +6,7 @@ use PhalApi\Exception\BadRequestException;
 
 /**
  * 该类负责检查签名和权限。
+ * 
  * @author ZhangZijing <i@pluvet.com> 2019-5-14~2019-5-16
  */
 class SignFilter implements Filter
@@ -52,6 +53,7 @@ class SignFilter implements Filter
         //获取当前访问的接口, 此处已经是转换后的路由, 即 service.action格式
         $service = \PhalApi\DI()->request->get('service');
         if ($service == null) {
+            http_response_code(404);
             throw new BadRequestException('错误接口');
         }
         $username = trim(\PhalApi\DI()->request->get('username'));

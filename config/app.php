@@ -13,7 +13,7 @@ return array(
      * 应用接口层的统一参数
      */
     'apiCommonRules' => array(
-        //'sign' => array('name' => 'sign', 'require' => true),
+        //'sign' => ['name' => 'sign', 'require' => true],
     ),
 
     /**
@@ -38,113 +38,115 @@ return array(
     ),
     /**
      * Auth 模块
+     * 使用方式可参考: http://www.thinkphp.cn/topic/59345.html https://www.waytomilky.com/archives/340.html
      */
     'auth' => array(
         'auth_on' => true, // 认证开关
         'auth_user' => 'user', // 用户信息表,
         'auth_group' => 'auth_group', // 组数据表名
-        'auth_group_access' => 'auth_group_access', // 用户-组关系表
+        'auth_group_access' => 'relationship_auth_group', // 用户-组关系表
         'auth_rule' => 'auth_rule', // 权限规则表
-        'auth_not_check_user' => array() //跳过权限检测的用户
+        'auth_not_check_user' => [] //跳过权限检测的用户
     ),
     /**
-     * 扩展类库 - 快速路由配置
+     * 路由表
      */
     'FastRoute' => array(
         /**
-         * 格式：array($method, $routePattern, $handler)
+         * 格式：[$method, $routePattern, $handler]
          *
          * @param string/array $method 允许的HTTP请求方式，可以为：GET/POST/HEAD/DELETE 等
          * @param string $routePattern 路由的正则表达式
          * @param string $handler 对应PhalApi中接口服务名称，即：?service=$handler
          */
         'routes' => array(
-            array('POST', '/', 'site.index'),
+            ['POST', '/', 'site.index'],
+
             // auth
-            array('POST', '/auth', 'auth.index'),
-            array('POST', '/auth/nonce', 'auth.getNonce'),
-            array('POST', '/auth/captch/phone', ''),
-            array('POST', '/auth/captch/email', 'auth.getCaptchByEmail'),
-            array('POST', '/auth/register/phone', ''),
-            array('POST', '/auth/register/email', 'auth.registerByEmail'),
-            array('POST', '/auth/login/phone', ''),
-            array('POST', '/auth/login/email', 'auth.loginByEmail'),
-            array('POST', '/auth/refresh', ''),
-            array('POST', '/auth/change_password', ''),
-            array('POST', '/auth/logout', 'auth.logout'),
-            array('POST', '/auth/status', ''),
+            ['POST', '/auth', 'auth.index'],
+            ['POST', '/auth/nonce', 'auth.getNonce'],
+            ['POST', '/auth/captch/phone', ''],
+            ['POST', '/auth/captch/email', 'auth.getCaptchByEmail'],
+            ['POST', '/auth/register/phone', ''],
+            ['POST', '/auth/register/email', 'auth.registerByEmail'],
+            ['POST', '/auth/login/phone', ''],
+            ['POST', '/auth/login/email', 'auth.loginByEmail'],
+            ['POST', '/auth/refresh', ''],
+            ['POST', '/auth/change_password', ''],
+            ['POST', '/auth/logout', 'auth.logout'],
+            ['POST', '/auth/status', ''],
 
             // user
-            array('POST', '/user/add', ''),
-            array('POST', '/user/update', ''),
-            array('POST', '/user/remove', ''),
-            array('POST', '/user', ''),
-            array('POST', '/user/list', ''),
-            array('POST', '/user/search', ''),
-            array('POST', '/user/followed', ''),
-            array('POST', '/user/follower', ''),
-            array('POST', '/user/follow', ''),
+            ['POST', '/user/add', ''],
+            ['POST', '/user/update', ''],
+            ['POST', '/user/remove', ''],
+            ['POST', '/user', ''],
+            ['POST', '/user/list', ''],
+            ['POST', '/user/search', ''],
+            ['POST', '/user/followed', ''],
+            ['POST', '/user/follower', ''],
+            ['POST', '/user/follow', ''],
 
             // score
-            array('POST', '/score/add', ''),
-            array('POST', '/score/update', ''),
-            array('POST', '/score/remove', ''),
-            array('POST', '/score', ''),
-            array('POST', '/score/list', ''),
-            array('POST', '/score/search', ''),
+            ['POST', '/score/add', 'score.addScore'],
+            ['POST', '/score/update', 'score.updateScore'],
+            ['POST', '/score/remove', 'score.removeScore'],
+            ['POST', '/score', 'score.getScore'],
+            ['POST', '/score/list', 'score.getScores'],
+            ['POST', '/score/search', 'score.searchScores'],
 
-            array('POST', '/score/performance', ''),
-            array('POST', '/score/music', ''),
+            ['POST', '/score/performance', ''],
+            ['POST', '/score/music', ''],
 
             // collection
-            array('POST', '/collection/add', ''),
-            array('POST', '/collection/list', ''),
-            array('POST', '/collection/search', ''),
-            array('POST', '/collection', ''),
-            array('POST', '/collection/update', ''),
-            array('POST', '/collection/remove', ''),
+            ['POST', '/collection/add', ''],
+            ['POST', '/collection/list', ''],
+            ['POST', '/collection/search', ''],
+            ['POST', '/collection', ''],
+            ['POST', '/collection/update', ''],
+            ['POST', '/collection/remove', ''],
 
             // tag
-            array('POST', '/tag/add', ''),
-            array('POST', '/tag/list', ''),
-            array('POST', '/tag/search', ''),
-            array('POST', '/tag', ''),
-            array('POST', '/tag/update', ''),
-            array('POST', '/tag/remove', ''),
+            ['POST', '/tag/add', ''],
+            ['POST', '/tag/list', ''],
+            ['POST', '/tag/search', ''],
+            ['POST', '/tag', ''],
+            ['POST', '/tag/update', ''],
+            ['POST', '/tag/remove', ''],
 
-            array('POST', '/tag/attach/add', ''),
-            array('POST', '/tag/attach/remove', ''),
+            ['POST', '/tag/attach/add', ''],
+            ['POST', '/tag/attach/remove', ''],
 
             // commment of score
-            array('POST', '/score_comment/add    ', ''),
-            array('POST', '/score_comment', ''),
-            array('POST', '/score_comment/update', ''),
-            array('POST', '/score_comment/remove', ''),
+            ['POST', '/score_comment/add    ', ''],
+            ['POST', '/score_comment', ''],
+            ['POST', '/score_comment/update', ''],
+            ['POST', '/score_comment/remove', ''],
 
             // comment of collection
-            array('POST', '/collection_comment/add    ', ''),
-            array('POST', '/collection_comment', ''),
-            array('POST', '/collection_comment/update', ''),
-            array('POST', '/collection_comment/remove', ''),
+            ['POST', '/collection_comment/add    ', ''],
+            ['POST', '/collection_comment', ''],
+            ['POST', '/collection_comment/update', ''],
+            ['POST', '/collection_comment/remove', ''],
 
             // favorite of score
-            array('POST', '/score_favorite/add    ', ''),
-            array('POST', '/score_favorite/list', ''),
-            array('POST', '/score_favorite', ''),
-            array('POST', '/score_favorite/update', ''),
-            array('POST', '/score_favorite/remove', ''),
+            ['POST', '/score_favorite/add    ', ''],
+            ['POST', '/score_favorite/list', ''],
+            ['POST', '/score_favorite', ''],
+            ['POST', '/score_favorite/update', ''],
+            ['POST', '/score_favorite/remove', ''],
 
             //favorite of collection
-            array('POST', '/collection_favorite/add', ''),
-            array('POST', '/collection_favorite/list', ''),
-            array('POST', '/collection_favorite', ''),
-            array('POST', '/collection_favorite/update', ''),
-            array('POST', '/collection_favorite/remove', ''),
+            ['POST', '/collection_favorite/add', ''],
+            ['POST', '/collection_favorite/list', ''],
+            ['POST', '/collection_favorite', ''],
+            ['POST', '/collection_favorite/update', ''],
+            ['POST', '/collection_favorite/remove', ''],
 
             // follow
-            array('POST', '/follow/add', ''),
-            array('POST', '/follow/list', ''),
-            array('POST', '/follow/remove', ''),
+            ['POST', '/follow/add', ''],
+            ['POST', '/follow/list', ''],
+            ['POST', '/follow/remove', ''],
 
 
         ),

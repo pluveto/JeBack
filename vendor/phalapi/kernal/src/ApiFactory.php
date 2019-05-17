@@ -19,7 +19,8 @@ use PhalApi\Exception\InternalServerErrorException;
  * @author      dogstar <chanzonghuang@gmail.com> 2014-10-02
  */
 
-class ApiFactory {
+class ApiFactory
+{
 
     /**
      * 创建服务器
@@ -38,7 +39,8 @@ class ApiFactory {
      * @uses \PhalApi\Api::init()
      * @throws BadRequestException 非法请求下返回400
      */
-    static function generateService($isInitialize = TRUE) {
+    static function generateService($isInitialize = TRUE)
+    {
         $di         = DI();
         $service    = $di->request->getService();
         $namespace  = $di->request->getNamespace();
@@ -51,12 +53,14 @@ class ApiFactory {
             );
         }
 
-        $apiClass = '\\' . str_replace('_', '\\', $namespace) 
+        $apiClass = '\\' . str_replace('_', '\\', $namespace)
             . '\\Api\\' . str_replace('_', '\\', ucfirst($api));
 
         if (!class_exists($apiClass)) {
+            http_response_code(404);
             throw new BadRequestException(
-                T('no such service as {service}', array('service' => $service)), 4
+                T('no such service as {service}', array('service' => $service)),
+                4
             );
         }
 
@@ -69,8 +73,11 @@ class ApiFactory {
         }
 
         if (!method_exists($api, $action) || !is_callable(array($api, $action))) {
+            http_response_code(404);
             throw new BadRequestException(
-                T('no such service as {service}', array('service' => $service)), 4
+
+                T('no such service as {service}', array('service' => $service)),
+                4
             );
         }
 
@@ -80,5 +87,4 @@ class ApiFactory {
 
         return $api;
     }
-	
 }

@@ -117,8 +117,6 @@ class Auth extends Api
             throw new BadRequestException('请求随机串错误');
         }
         /** ------- 密码检查 ------- */
-        // TODO: 有可能用户先用手机号注册, 之后绑定邮箱用邮箱登录
-        //       这种情况下传入的sign是用邮箱加密的. 解决方法: 密码只用SHA1加密或公开salt.
         if (!$domain->checkLoginSignByEmailAndNonce($this->email, $this->nonce, $this->sign)) {
             throw new BadRequestException('请求签名错误');
         }
