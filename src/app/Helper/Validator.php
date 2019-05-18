@@ -24,10 +24,16 @@ class Validator
      * 检查用户名格式是否正确. 不能以@开头, 可以含有?.@_所有中英文和emoji.
      *
      * @param string $username
-     * @return void
+     * @return bool 正确返回true
      */
     public static function checkUsernameFormat(string $username)
     {
         return preg_match('/^(?!@)[?.@\-a-zA-Z0-9_\x4e00-\x9fa5\xD83C-\xDBFF\xDC00-\xDFFF]+$/i', $username);
+    }
+
+    // TODO: 敏感词检查
+    public static function checkSensitiveWords(string $text)
+    {
+        # code...
     }
 }

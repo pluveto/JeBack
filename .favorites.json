@@ -45,15 +45,6 @@
         "id": "3En0xOZlrNRaVJdF"
     },
     {
-        "type": "Directory",
-        "name": "a:\\src\\php\\je.test.com\\project\\tests",
-        "parent_id": null,
-        "fsPath": "a:\\src\\php\\je.test.com\\project\\tests",
-        "workspaceRoot": null,
-        "workspacePath": null,
-        "id": "42TO6dxPhlH7UVDr"
-    },
-    {
         "type": "File",
         "name": "a:\\src\\php\\je.test.com\\project\\config\\di.php",
         "parent_id": null,
@@ -79,5 +70,23 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "RSM72bhT1AsrqgcJ"
+    },
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\src\\app\\Helper",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\src\\app\\Helper",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "kyASbV7G4DRYauxW"
+    },
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\tests\\__tests__",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\tests\\__tests__",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "UWF1ckgeM69NG2Ad"
     }
 ]

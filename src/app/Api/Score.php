@@ -29,31 +29,60 @@ class Score extends Api
                 'type' =>  ['name' => 'type', 'require' => false, 'min' => 0, 'max' => 0, 'type' => 'int'],
                 'description' => ['name' => 'description', 'require' => false, 'min' => 0, 'max' => 10000, 'type' => 'string'],
                 'addition' => ['name' => 'addition', 'require' => false, 'min' => 1, 'max' => 255, 'type' => 'string'],
+                // 为了避免未实际访问提交曲谱API, 造成垃圾文件, 
+                // 先上传到临时文件夹, 提交后再转移到正式文件夹. 临时文件夹定时清理.
                 'image' => ['name' => 'image', 'require' => false, 'min' => 1, 'max' => 255, 'type' => 'string'],
-
             ]
 
         );
     }
     /**
      * 添加曲谱
-     *
+     * @todo 敏感词检查
+     * @routine /score/add
      * @return array 刚返回的曲谱id
      */
     public function addScore()
     {
         /** ============== 格式检查 ============== */
+        /** ------- 检查title ------- */
+
 
         /** ============== 正式检查 ============== */
     }
+    /**
+     * 更新曲谱
+     * @routine /score/update
+     * @return void
+     */
     public function updateScore()
     { }
+    /**
+     * 删除曲谱
+     * @routine /score/remove
+     * @return void
+     */
     public function removeScore()
     { }
+    /**
+     * 获取曲谱
+     * @routine /score
+     * @return void
+     */
     public function getScore()
     { }
+    /**
+     * 获取曲谱列表
+     * @routine /score/list
+     * @return void
+     */
     public function getScoreList()
     { }
+    /**
+     * 关键字搜索曲谱
+     * @routine /score/search
+     * @return void
+     */
     public function searchScore()
     { }
 }

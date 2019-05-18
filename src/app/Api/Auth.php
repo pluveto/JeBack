@@ -54,7 +54,7 @@ class Auth extends Api
      */
     public function index()
     {
-        $base_url = \PhalApi\DI()->urlHelper->baseUrl();
+        $base_url = \App\Helper\Path::baseUrl();
         return array(
             'title' => 'Hello, Moe Auth!',
             'version' => '1.0.0',
@@ -120,10 +120,11 @@ class Auth extends Api
         if (!$domain->checkLoginSignByEmailAndNonce($this->email, $this->nonce, $this->sign)) {
             throw new BadRequestException('请求签名错误');
         }
-
-        return array(
-            'token' => $domain->setUpTokenByEmail($this->email, $this->nonce)
-        );
+        $domain->setUpTokenByEmail($this->email, $this->nonce);
+        $userDomain = new \App\Domain\User();
+        $userInfo = $userDomain->getUserInfoByEmail($this->email);
+        // 注意: userinfo中不得传递密码(即使是摘要密码)
+        return $userInfo;
     }
     /**
      * 发送邮件验证码. 不检查邮箱存在性. 已注册的用户也可以接收验证码.

@@ -33,7 +33,16 @@ class User extends NotORM
     {
         return $this->getORM()->where('email', $email)->fetchOne();
     }
-
+    /**
+     * 通过 Id 获取一个用户
+     *
+     * @param integer $userId
+     * @return array 用户
+     */
+    public function getUser(int $userId)
+    {
+        return $this->getORM()->where('id', $userId)->fetchOne();
+    }
     /**
      * 添加用户
      * @author ZhangZijing <i@pluvet.com>
@@ -51,13 +60,14 @@ class User extends NotORM
      * @author ZhangZijing <i@pluvet.com>
      * @param string $email
      * @param string $token
-     * @return void
+     * @return //array user
      */
     public function updateUserTokenByEmail(string $email, string $token)
     {
-        return $this->getORM()->where('email', $email)->update(
+        $this->getORM()->where('email', $email)->update(
             array('token' => $token)
         );
+        //return $this->getORM()->where('email', $email)->fetchOne();
     }
 
     /**

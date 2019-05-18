@@ -1,7 +1,6 @@
 <?php
 namespace App\Helper;
 
-use PhalApi\Exception\BadRequestException;
 
 /**
  * 系统邮件帮助类

@@ -1,6 +1,7 @@
 <?php
 /**
  * 请在下面放置任何您需要的应用配置
+ * Pluveto注: 密钥配置, 请放到 je.php, 该文件属于 .gitignore
  *
  * @license     http://www.phalapi.net/license GPL 协议
  * @link        http://www.phalapi.net/
@@ -38,7 +39,9 @@ return array(
     ),
     /**
      * Auth 模块
-     * 使用方式可参考: http://www.thinkphp.cn/topic/59345.html https://www.waytomilky.com/archives/340.html
+     * 使用方式可参考: 
+     *  http://www.thinkphp.cn/topic/59345.html 
+     *  https://www.waytomilky.com/archives/340.html
      */
     'auth' => array(
         'auth_on' => true, // 认证开关
@@ -62,7 +65,7 @@ return array(
         'routes' => array(
             ['POST', '/', 'site.index'],
 
-            // auth
+            // 1.auth
             ['POST', '/auth', 'auth.index'],
             ['POST', '/auth/nonce', 'auth.getNonce'],
             ['POST', '/auth/captch/phone', ''],
@@ -76,18 +79,15 @@ return array(
             ['POST', '/auth/logout', 'auth.logout'],
             ['POST', '/auth/status', ''],
 
-            // user
+            // 2. user
             ['POST', '/user/add', ''],
             ['POST', '/user/update', ''],
             ['POST', '/user/remove', ''],
             ['POST', '/user', ''],
             ['POST', '/user/list', ''],
             ['POST', '/user/search', ''],
-            ['POST', '/user/followed', ''],
-            ['POST', '/user/follower', ''],
-            ['POST', '/user/follow', ''],
 
-            // score
+            // 3. score
             ['POST', '/score/add', 'score.addScore'],
             ['POST', '/score/update', 'score.updateScore'],
             ['POST', '/score/remove', 'score.removeScore'],
@@ -98,7 +98,7 @@ return array(
             ['POST', '/score/performance', ''],
             ['POST', '/score/music', ''],
 
-            // collection
+            // 4. collection
             ['POST', '/collection/add', ''],
             ['POST', '/collection/list', ''],
             ['POST', '/collection/search', ''],
@@ -106,7 +106,7 @@ return array(
             ['POST', '/collection/update', ''],
             ['POST', '/collection/remove', ''],
 
-            // tag
+            // 5. tag
             ['POST', '/tag/add', ''],
             ['POST', '/tag/list', ''],
             ['POST', '/tag/search', ''],
@@ -117,36 +117,42 @@ return array(
             ['POST', '/tag/attach/add', ''],
             ['POST', '/tag/attach/remove', ''],
 
-            // commment of score
+            // 6. commment of score
             ['POST', '/score_comment/add    ', ''],
             ['POST', '/score_comment', ''],
             ['POST', '/score_comment/update', ''],
             ['POST', '/score_comment/remove', ''],
 
-            // comment of collection
+            // 7. comment of collection
             ['POST', '/collection_comment/add    ', ''],
             ['POST', '/collection_comment', ''],
             ['POST', '/collection_comment/update', ''],
             ['POST', '/collection_comment/remove', ''],
 
-            // favorite of score
+            // 8. favorite of score
             ['POST', '/score_favorite/add    ', ''],
             ['POST', '/score_favorite/list', ''],
             ['POST', '/score_favorite', ''],
             ['POST', '/score_favorite/update', ''],
             ['POST', '/score_favorite/remove', ''],
 
-            //favorite of collection
+            // 9. favorite of collection
             ['POST', '/collection_favorite/add', ''],
             ['POST', '/collection_favorite/list', ''],
             ['POST', '/collection_favorite', ''],
             ['POST', '/collection_favorite/update', ''],
             ['POST', '/collection_favorite/remove', ''],
 
-            // follow
-            ['POST', '/follow/add', ''],
-            ['POST', '/follow/list', ''],
-            ['POST', '/follow/remove', ''],
+            // 10. follow
+            ['POST', '/follow/list/follwing', 'follow.getFollowingByUser'],
+            ['POST', '/follow/list/follower', 'follow.getFollowerByUser'],
+            ['POST', '/follow/add', 'follow.addFollow'],
+            ['POST', '/follow/remove', 'follow.removeFollow'],
+            ['POST', '/follow/following', 'follow.getFollowing'],
+            ['POST', '/follow/follower', 'follow.getFollower'],
+
+            // 11. upload
+            ['POST', '/upload/image', 'upload.uploadImage'],
 
 
         ),

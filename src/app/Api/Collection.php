@@ -17,7 +17,6 @@ class Collection extends Api
     {
         return array(
             'addCollection' => array(
-                'username' => array('name' => 'username'),
                 'image' => array('name' => 'image'),
                 'title' => array('name' => 'title'),
                 'description' => array('name' => 'description')
@@ -34,8 +33,7 @@ class Collection extends Api
                 'collectionId' => array('name' => 'collectionId')
             ),
             'remove' => array(
-                'collectionId' => array('name' => 'collectionId'),
-                'username' => array('name' => 'username')
+                'collectionId' => array('name' => 'collectionId')
             )
 
         );
@@ -51,8 +49,9 @@ class Collection extends Api
     public function addCollection()
     {
         $domain = new Domain();
+        $user = \App\Domain\Auth::$currentUser;
 
-        $username = $this->username;
+        $username = $user['username'];
         $image = $this->image;
         $title = $this->title;
         $description = $this->description;

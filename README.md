@@ -44,10 +44,6 @@
     * 获取指定用户              /user
     * 列出一些用户              /user/list
     * 搜索一些用户              /user/search
-
-    * 获取关注者                /user/followed
-    * 获取粉丝                  /user/follower
-    * 关注、取消关注用户        /user/follow
     
 * 曲谱
     * 创建一个曲谱              /score/add
@@ -109,11 +105,13 @@
     * 删除一个收藏              /collection_favorite/remove
 
 * 关注列表
-    * 创建一个关注              /follow/add
-    //* 列出一些关注            /follow/list    
-    * 通过关注者查找被关注者    /follow/following
-    * 通过被关注者查找关注者    /follow/followed
-    * 删除一个关注              /follow/remove
+    * 获取某用户的关注列表       /follow/list/followingbyuser
+    * 获取某用户的粉丝列表       /follow/list/follwerbyuser
+    * 令当前用户关注某用户       /follow/add
+    * 令当前用户停止关注某用户   /follow/remove
+    * 获取当前用户的关注列表     /follow/following
+    * 获取当前用户的粉丝列表     /follow/follower
+    
 
 * 文件
     * 上传文件                  /file/upload
