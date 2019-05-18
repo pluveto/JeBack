@@ -33,26 +33,6 @@ class User extends NotORM
     {
         return $this->getORM()->where('email', $email)->fetchOne();
     }
-    /**
-     * 通过 Id 获取一个用户
-     *
-     * @param integer $userId
-     * @return array 用户
-     */
-    public function getUser(int $userId)
-    {
-        return $this->getORM()->where('id', $userId)->fetchOne();
-    }
-    /**
-     * 添加用户
-     * @author ZhangZijing <i@pluvet.com>
-     * @param array $data 用户数据, 邮箱/手机号至少有一个, 密码必填.
-     * @return array 插入的用户(若失败, 返回false)
-     */
-    public function addUser(array $data)
-    {
-        return $this->getORM()->insert($data);
-    }
 
     /**
      * 更新具有指定邮箱的用户的 token

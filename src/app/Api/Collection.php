@@ -118,7 +118,7 @@ class Collection extends Api
         $user = \App\Domain\Auth::$currentUser;
         $collectionId = $this->collectionId;
         $collection = $domain->getCollection($collectionId);
-        if ($user['id'] != $collection['owner_id']) {
+        if ($user['id'] != $collection['user_id']) {
             throw error;
         }
         $domain->removeCollection($collectionId);

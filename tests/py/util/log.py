@@ -3,11 +3,11 @@ from colorama import Fore, Back, Style, init
 
 def prepare():
     init()  # 初始化控制台着色
-    print('\x1b[2J', end='', flush=True)  # 清屏
+    # print('\x1b[2J', end='', flush=True)  # 清屏
 
 
 def info(msg, level=0, pre=''):
-    print("    "*level +  Fore.BLUE +
+    print("    "*level + Fore.BLUE +
           "info: " + Fore.CYAN + pre + Style.RESET_ALL + msg)
 
 

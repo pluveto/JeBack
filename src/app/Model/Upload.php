@@ -11,7 +11,7 @@ use PhalApi\Model\NotORMModel as NotORM;
 
 
 
-class Upload
+class Upload extends NotORM
 {
     private const UPLOAD_TEMP_TALBE = "upload_temp";
 
@@ -20,5 +20,19 @@ class Upload
         $table = self::UPLOAD_TEMP_TALBE;
         $ormNonce = \PhalApi\DI()->notorm->$table;
         return $ormNonce->insert($data);
+    }
+
+    public function getTempImage(int $id)
+    {
+        $table = self::UPLOAD_TEMP_TALBE;
+        $ormNonce = \PhalApi\DI()->notorm->$table;
+        return $ormNonce->where('id', $id)->fetchOne();
+    }
+
+    public function removeTempImage(int $id)
+    {
+        $table = self::UPLOAD_TEMP_TALBE;
+        $ormNonce = \PhalApi\DI()->notorm->$table;
+        return $ormNonce->where('id', $id)->delete();
     }
 }

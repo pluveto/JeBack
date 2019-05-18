@@ -88,5 +88,14 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "UWF1ckgeM69NG2Ad"
+    },
+    {
+        "type": "Directory",
+        "name": "a:\\src\\php\\je.test.com\\project\\tests\\py",
+        "parent_id": null,
+        "fsPath": "a:\\src\\php\\je.test.com\\project\\tests\\py",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "wpTEQ9ktfhC5s08R"
     }
 ]

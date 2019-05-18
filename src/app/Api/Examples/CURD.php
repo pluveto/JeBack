@@ -9,9 +9,11 @@ use App\Domain\Examples\CURD as DomainCURD;
  * @author dogstar 20170612
  */
 
-class CURD extends Api {
+class CURD extends Api
+{
 
-    public function getRules() {
+    public function getRules()
+    {
         return array(
             'insert' => array(
                 'title' => array('name' => 'title', 'require' => true, 'min' => 1, 'max' => '20', 'desc' => '标题'),
@@ -43,7 +45,8 @@ class CURD extends Api {
      * @desc 向数据库插入一条纪录数据
      * @return int id 新增的ID
      */
-    public function insert() {
+    public function insert()
+    {
         $rs = array();
 
         $newData = array(
@@ -56,7 +59,7 @@ class CURD extends Api {
         $id = $domain->insert($newData);
 
         $rs['id'] = $id;
-        return $rs; 
+        return $rs;
     }
 
     /**
@@ -64,7 +67,8 @@ class CURD extends Api {
      * @desc 根据ID更新数据库中的一条纪录数据
      * @return int code 更新的结果，1表示成功，0表示无更新，false表示失败
      */
-    public function update() {
+    public function update()
+    {
         $rs = array();
 
         $newData = array(
@@ -89,7 +93,8 @@ class CURD extends Api {
      * @return int      state       状态
      * @return string   post_date   发布日期
      */
-    public function get() {
+    public function get()
+    {
         $domain = new DomainCURD();
         $data = $domain->get($this->id);
 
@@ -101,7 +106,8 @@ class CURD extends Api {
      * @desc 根据ID删除数据库中的一条纪录数据
      * @return int code 删除的结果，1表示成功，0表示失败
      */
-    public function delete() {
+    public function delete()
+    {
         $rs = array();
 
         $domain = new DomainCURD();
@@ -119,7 +125,8 @@ class CURD extends Api {
      * @return int      page    当前第几页
      * @return int      perpage 每页数量
      */
-    public function getList() {
+    public function getList()
+    {
         $rs = array();
 
         $domain = new DomainCURD();

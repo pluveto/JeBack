@@ -27,7 +27,7 @@ class Collection
 
         $user = $userModel->getUserByUsername($username);
         $data = array(
-            'owner_id' => $user['id'],
+            'user_id' => $user['id'],
             'image' => $image,
             'title' => $title,
             'description' => $description,
@@ -82,11 +82,12 @@ class Collection
     public function getCollection($collectionId)
     {
         $collcetionModel = new CollectionModel();
-        return $collcetionModel->getCollection($collectionId);
+        return $collcetionModel->get($collectionId);
     }
 
     /**
-     * 删除指定谱册(软删除) 将状态从status 0 =>1
+     * 删除指定谱册(软删除) 将状态从status 0 =>2
+     * 0 为正常 1 是对非作者隐藏, 2 是对所有用户隐藏
      * @param int collectionId
      */
     public function removeCollection($collectionId)
@@ -94,7 +95,7 @@ class Collection
         $collcetionModel = new CollectionModel();
         $data = array(
             'id' => $collectionId,
-            'status' => 1
+            'status' => 2
         );
         $collcetionModel->changeCollectionStatus($data);
     }

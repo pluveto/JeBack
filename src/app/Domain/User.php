@@ -11,11 +11,19 @@ use App\Domain\Group as GroupDomain;
  */
 class User
 {
-
+    public function getUserSimpleInfo($id)
+    {
+        $userModel = new UserModel();
+        $user = $userModel->get($id);
+        return [
+            'id' => $user['id'],
+            'username' => $user['username']
+        ];
+    }
     public function getUserInfo($userId)
     {
         $userModel = new UserModel();
-        $user = $userModel->getUser($userId);
+        $user = $userModel->get($userId);
         return $this->packUpUserInfo($user);
     }
 

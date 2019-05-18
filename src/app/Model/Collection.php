@@ -10,7 +10,6 @@ use PhalApi\Model\NotORMModel as NotORM;
 
 class Collection extends NotORM
 {
-    private const COLLECTION_TABLE = 'collection';
     private const RELATIONSHIP = 'collection_score';
 
     /**
@@ -57,22 +56,18 @@ class Collection extends NotORM
     }
 
     /**
-     * 获取一个谱册
+     * 获取一个谱册(pluvet 注: 这个被我删了, 因为父类已经有get(id)的方法, 所以没必要重复实现)
      * @param id
      * @return 返回指定谱册
      */
-    public function getCollection($id)
-    {
-        return $this->getORM()->where('id', $id)->fetchOne();
-    }
 
 
     /**
      * 获取一些谱册 
-     * @param int 当前页码
-     * @param int 每页显示
-     * @param int 谱册状态
-     * @return 返回谱册列表
+     * @param int  $page 当前页码
+     * @param int  $pageSize 每页显示
+     * @param int  $status 谱册状态
+     * @return array 返回谱册列表
      */
     public function getList($page, $pageSize, $status)
     {

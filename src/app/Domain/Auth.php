@@ -255,7 +255,7 @@ class Auth
         $salt = \PhalApi\DI()->config->get('je.security.salt');
         // 由于登录时密码非明文传输, 此处的salt实际上暴露在了客户端
         $passwordSalted = sha1("moeje" . $password);
-        $user = $model->addUser(array(
+        $user = $model->insert(array(
             'username' => $username,
             'email' => $email,
             'password' => $passwordSalted,

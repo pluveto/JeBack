@@ -2,7 +2,7 @@
 namespace App\Domain;
 
 use App\Model\Upload as Model;
-
+use App\Model\Score as ScoreModel;
 
 /**
  * 文件上传 Domain 类
@@ -12,13 +12,79 @@ use App\Model\Upload as Model;
 class Upload
 {
 
+    public function getImageByScoreId(int $scoreId)
+    {
+        $scoreModel = new ScoreModel();
+        $imageId =  $scoreModel->get($scoreId, 'image_id')['image_id'];
+        $model = new Model();
+        return $model->get($imageId);
+    }
+    /**
+     * 把一个临时图片正式保存
+     *
+     * @param int $tempId
+     * @return void
+     */
+    public function saveImage($tempId, int $type)
+    {
+        $tempImage = $this->getTempImage($tempId);
+        $model = new Model();
+        $oldPath = \App\Helper\Path::getAbsolutePathToPublic($tempImage['path']);
+        $newPath = \App\Helper\Path::getImageDir()   + '/' + basename($tempImage['path']);
+        rename($oldPath, $newPath);
+        return $model->insert([
+            'path' => \App\Helper\Path::getRelativePathToPublic($newPath),
+            'type' => 0, // 0 曲谱 , 1 谱册
+            'created_at' => time(),
+        ]);
+    }
+
+    public function getTempImage($tempId)
+    {
+        $model = new Model();
+        return $model->getTempImage($tempId);
+    }
+    /**
+     * 检查图片Id是否存在并属于某用户
+     *
+     * @param int $tempImageId
+     * @param int $userId
+     * @return bool
+     */
+    public function checkIdOwnerMatch(int $tempImageId, int $userId)
+    {
+        $model = new Model();
+        $tempImage = $model->getTempImage($tempImageId);
+        return $tempImage && ($tempImage['user_id'] == $userId);
+    }
+
+    public function removeFile(int $id)
+    {
+        $model = new Model();
+        $file = $model->get($id);
+        if (unlink(\App\Helper\Path::getAbsolutePathToPublic($file['path']))) {
+            $model->delete($id);
+            return true;
+        }
+        return false;
+    }
+    public function removeTempFile(int $id)
+    {
+        $model = new Model();
+        $file = $model->get($id);
+        if (unlink(\App\Helper\Path::getAbsolutePathToPublic($file['path']))) {
+            $model->delete($id);
+            return true;
+        }
+        return false;
+    }
     /**
      * 检测图像文件是否真的是一个图像文件(而不是恶意代码)
      *
      * @param string $filepath
      * @return bool 检测通过返回 true
      */
-    public function checkImageMime($filepath)
+    public function checkImageMime(string $filepath)
     {
         return (in_array(mime_content_type($filepath), array('image/jpeg', 'image/png', 'image/gif', 'image/webp')));
     }
@@ -34,16 +100,16 @@ class Upload
         $tmpName = $file['tmp_name'];
         // 为文件计算一个安全的文件名
         $randomFilename = md5($file['name'] . time()) . strrchr($file['name'], '.');
-        $imgPath = \App\Helper\Path::getImageTempDir() .  $randomFilename;
+        $imgPath = \App\Helper\Path::getImageTempDir() . '/' .  $randomFilename;
         if (!move_uploaded_file($tmpName, $imgPath)) {
             return array('error' => '无法移动文件');
         }
 
-        $url = \App\Helper\Path::baseUrl() . \App\Helper\Path::getImageTempDirRel() . $randomFilename;
+        $url = \App\Helper\Path::baseUrl() . \App\Helper\Path::getImageTempRelativeDir() . '/' . $randomFilename;
         // 将临时文件信息存到数据库
         $model = new Model();
         $fileInserted = $model->insertTempFile([
-            'path' => $imgPath,
+            'path' => \App\Helper\Path::getRelativePathToPublic($imgPath),
             'user_id' => \App\Domain\Auth::$currentUser['id'],
             'created_at' => time()
         ]);
@@ -51,5 +117,13 @@ class Upload
             'id' => $fileInserted['id'],
             'url' => $url
         ];
+    }
+
+    public function getScoreImageUrl($scoreId)
+    {
+        $image = $this->getImageByScoreId($scoreId);
+        if ($image == null) return null;
+        $url = \App\Helper\Path::baseUrl() . \App\Helper\Path::getImageRelativeDir() . getImageByScoreId($scoreId)['path'];
+        return $url;
     }
 }
