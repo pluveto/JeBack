@@ -59,7 +59,7 @@ class SignFilter implements Filter
         $username = trim(\PhalApi\DI()->request->get('username'));
         $checkResult = $domain->checkAuth($service, $username);
         if ($checkResult == false) {
-            throw new BadRequestException('权限不足');
+            throw new BadRequestException('用户组无权限访问此接口');
         }
         return $checkResult;
     }

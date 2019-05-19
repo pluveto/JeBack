@@ -79,7 +79,7 @@ with open(os.path.join(dirname, 'assets/google.png'), 'rb') as pngfile:
                         },
                         files={'file': ('google.png', pngfile, 'image/png')}, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-##log.response(jsonRaw, 1)
+# log.response(jsonRaw, 1)
 jsonPass = False
 try:
     jsonObj = json.loads(jsonRaw)
@@ -92,6 +92,7 @@ if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     if 'ret' in jsonObj and jsonObj['ret'] == 200:
         log.info("url: " + str(jsonObj['data']['url']), 1)
+        log.info("id: " + str(jsonObj['data']['id']), 1)
         log.success('测试通过\n', 1)
 
 log.info('/upload/image  '+'上传一个php文件, 将mime伪造为正常png文件', 0, getNum())

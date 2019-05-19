@@ -87,6 +87,6 @@ class Collection extends NotORM
      */
     public function searchByName($name)
     {
-        return $this->getORM()->where('title LIKE ?', '%' + $name + '%')->fetchAll();
+        return $this->getORM()->where('title LIKE ?', '%' . $name . '%')->fetchAll();
     }
 }

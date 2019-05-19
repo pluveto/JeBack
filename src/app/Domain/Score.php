@@ -12,21 +12,32 @@ use App\Model\Upload as UploadModel;
 class Score
 {
     /**
-     * 检查曲谱Id是否存在并属于某用户
+     * 检查曲谱是否存在
      *
-     * @param int $scoreId
-     * @param int $userId
-     * @return bool
+     * @param integer $scoreId
+     * @return void
      */
-    public function checkIdOwnerMatch($scoreId, $userId)
+    public function checkScoreExist(int $scoreId)
     {
         $model = new Model();
-        $score = $model->getTempImage($scoreId);
+        $score = $model->get($scoreId);
+        return $score != null;
+    }
+    /**
+     * 检查曲谱是否存在并属于某用户
+     *
+     * @param Type $var
+     * @return void
+     */
+    public function checkIdOwnerMatch(int $scoreId, int $userId)
+    {
+        $model = new Model();
+        $score = $model->get($scoreId);
         return $score && ($score['user_id'] == $userId);
     }
 
     public function addScore(
-        string $tilte,
+        string $title,
         string $text,
         string $alias,
         string $anime,
@@ -37,8 +48,9 @@ class Score
         int    $image_id
     ) {
         $model = new Model();
-        $model->insert([
-            'tilte' => $tilte,
+        return $model->insert([
+            'title' => $title,
+            'user_id' => \App\Domain\Auth::$currentUser['id'],
             'text' => $text,
             'alias' => $alias,
             'anime' => $anime,
@@ -46,7 +58,41 @@ class Score
             'type' => $type,
             'description' => $description,
             'addition' => $addition,
-            'image_id' => $image_id
+            'image_id' => $image_id,
+            'status' => 0,
+            'created_at' => time(),
+            'updated_at' => time(),
+        ]);
+    }
+    public function updateScore(
+        int $id,
+        string $title,
+        string $text,
+        string $alias,
+        string $anime,
+        string $key,
+        int    $type,
+        string $description,
+        string $addition,
+        int    $image_id
+    ) {
+        // 过滤 Addition 的换行符并简单过滤标签, 至于过滤真正的 XSS(比如我填个 " onfocus="evil() ) , 则是前端的事情
+        $title = str_replace('\n', '', strip_tags($title));
+        $addition = str_replace('\n', '', strip_tags($addition));
+
+        $model = new Model();
+        return $model->update($id, [
+            'title' => $title,
+            'text' => $text,
+            'alias' => $alias,
+            'anime' => $anime,
+            'key' => $key,
+            'type' => $type,
+            'description' => $description,
+            'addition' => $addition,
+            'image_id' => $image_id,
+            'status' => 0,
+            'updated_at' => time(),
         ]);
     }
     public function removeScore($id)
@@ -54,46 +100,47 @@ class Score
         $model = new Model();
         return $model->delete($id);
     }
-    public function getScoreList($page, $perpage)
+    public function searchScoreByTitle($title, $page, $perpage)
     {
-        $rs = array('items' => array(), 'total' => 0);
-
         $model = new Model();
+        $items = $model->searchScoreByTitle($title, $page, $perpage);
+        $total = $model->getScoreSearchCount($title);
+        $return =  $this->prepareList($items, $total);
+        $return['page'] = $page;
+        $return['perpage'] =  $perpage;
+        return $return;
+    }
+    private function prepareList($items, $total)
+    {
         $uploadDomain = new \App\Domain\Upload();
         $userDomain = new \App\Domain\User();
-        $items = $model->getScoreListItems($page, $perpage);
-        /*
-           return array_filter(array(
-            'id'            => $score['id'],
-            'tilte'         => $score['tilte'],
-            'text'          => $score['text'],
-            'user'          => $userDomain->getUserSimpleInfo($score['user_id']),
-            'alias'         => json_decode($score['alias']),
-            'anime'         => $score['anime'],
-            'key'           => $score['key'],
-            'type'          => $score['type'],
-            'description'   => $score['description'],
-            'addition'      => $score['addition'],
-            'image_url'     => $uploadDomain->getScoreImageUrl($scoreId),
-        ));
-        */
+
+        $rs = array('items' => array(), 'total' => 0);
         foreach ($items as &$item) {
 
-
+            // 已经2019-5-19 01:36:10了, 肝不动了, 
+            // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力
             $item['user'] = $userDomain->getUserSimpleInfo($item['user_id']);
             $item['user_id'] = null;
-            
+
 
             $item['image_url'] =  $uploadDomain->getScoreImageUrl($item['id']);
             $item['image_id'] = null;
 
             $item = array_filter($item);
         }
-        $total = $model->getScoreCount();
+
 
         $rs['items'] = $items;
         $rs['total'] = $total;
         return $rs;
+    }
+    public function getScoreList($page, $perpage)
+    {
+        $model = new Model();
+        $items = $model->getScoreListItems($page, $perpage);
+        $total = $model->getScoreCount();
+        return $this->prepareList($items, $total);
     }
     public function packUpScoreList($page, $perpage)
     {
@@ -102,8 +149,8 @@ class Score
 
         $rs['items'] = $list['items'];
         $rs['total'] = $list['total'];
-        $rs['page'] = $this->page;
-        $rs['perpage'] = $this->perpage;
+        $rs['page'] = $page;
+        $rs['perpage'] =  $perpage;
         return  $rs;
     }
     public function packUpScoreInfo($scoreId)
@@ -114,7 +161,7 @@ class Score
         $score = $model->get($scoreId);
         return array_filter(array(
             'id'            => $score['id'],
-            'tilte'         => $score['tilte'],
+            'title'         => $score['title'],
             'text'          => $score['text'],
             'user'          => $userDomain->getUserSimpleInfo($score['user_id']),
             'alias'         => json_decode($score['alias']),

@@ -92,8 +92,8 @@ return array(
             ['POST', '/score/update', 'score.updateScore'],
             ['POST', '/score/remove', 'score.removeScore'],
             ['POST', '/score', 'score.getScore'],
-            ['POST', '/score/list', 'score.getScores'],
-            ['POST', '/score/search', 'score.searchScores'],
+            ['POST', '/score/list', 'score.getScoreList'],
+            ['POST', '/score/search', 'score.searchScore'],
 
             ['POST', '/score/performance', ''],
             ['POST', '/score/music', ''],

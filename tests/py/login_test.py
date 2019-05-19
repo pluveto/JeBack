@@ -62,6 +62,7 @@ sign = hashlib.sha1((nonce + email + hashlib.sha1(
 log.info('/auth/login/email  '+'使用 nonce 进行登录, 期待返回 ret = 200 && token', 0, '#3 ')
 res = requests.post(baseUrl + "/auth/login/email",
                     data={
+                        
                         'email': email,
                         'nonce': nonce,
                         'sign': sign

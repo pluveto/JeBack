@@ -60,9 +60,9 @@ class Path
         return $dir;
     }
     /**
-     * 获取正式图片文件夹相对路径, 不以 / 结尾
+     * 获取正式图片文件夹相对路径(包含{date}替换(若有)), 不以 / 结尾
      *
-     * @return string 临时文件文件夹, 相对路径
+     * @return string 正式文件文件夹, 相对路径
      */
     public static function getImageRelativeDir()
     {

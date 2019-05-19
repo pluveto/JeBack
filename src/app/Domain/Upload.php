@@ -20,25 +20,34 @@ class Upload
         return $model->get($imageId);
     }
     /**
-     * 把一个临时图片正式保存
+     * 把一个临时图片正式保存, (临时文件被移动, 之后其数据库item也被删除)
      *
      * @param int $tempId
-     * @return void
+     * @return int 插入后的正式id
      */
     public function saveImage($tempId, int $type)
     {
         $tempImage = $this->getTempImage($tempId);
         $model = new Model();
         $oldPath = \App\Helper\Path::getAbsolutePathToPublic($tempImage['path']);
-        $newPath = \App\Helper\Path::getImageDir()   + '/' + basename($tempImage['path']);
-        rename($oldPath, $newPath);
-        return $model->insert([
-            'path' => \App\Helper\Path::getRelativePathToPublic($newPath),
-            'type' => 0, // 0 曲谱 , 1 谱册
-            'created_at' => time(),
-        ]);
-    }
 
+        $newPath = \App\Helper\Path::getImageDir()   . '/' . basename($tempImage['path']);
+        rename($oldPath, $newPath);
+        $model->removeTempImage($tempId);
+        $id =  intval($model->insert([
+            'path' => \App\Helper\Path::getRelativePathToPublic($newPath),
+            'user_id' => \App\Domain\Auth::$currentUser['id'],
+            'type' => $type, // 0 曲谱 , 1 谱册
+            'created_at' => time(),
+        ]));
+        return $id;
+    }
+    /**
+     * 获取临时图片
+     *
+     * @param int $tempId 临时图片 Id
+     * @return void
+     */
     public function getTempImage($tempId)
     {
         $model = new Model();
@@ -51,7 +60,7 @@ class Upload
      * @param int $userId
      * @return bool
      */
-    public function checkIdOwnerMatch(int $tempImageId, int $userId)
+    public function checkTempImageIdOwnerMatch(int $tempImageId, int $userId)
     {
         $model = new Model();
         $tempImage = $model->getTempImage($tempImageId);
@@ -115,7 +124,7 @@ class Upload
         ]);
         return [
             'id' => $fileInserted['id'],
-            'url' => $url
+            'image_url' => $url
         ];
     }
 
@@ -123,7 +132,7 @@ class Upload
     {
         $image = $this->getImageByScoreId($scoreId);
         if ($image == null) return null;
-        $url = \App\Helper\Path::baseUrl() . \App\Helper\Path::getImageRelativeDir() . getImageByScoreId($scoreId)['path'];
+        $url = \App\Helper\Path::baseUrl() . $this->getImageByScoreId($scoreId)['path'];
         return $url;
     }
 }

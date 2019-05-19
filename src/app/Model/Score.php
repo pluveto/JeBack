@@ -16,9 +16,9 @@ class Score extends NotORM
     public function getScoreListItems($page, $perpage)
     {
         return $this->getORM()
-            ->select('id,title,created_at,anime,key,addition,user_id,image_id')
+            ->select('`id`,`title`,`created_at`,`updated_at`,`anime`,`key`,`addition`,`user_id`,`image_id`')
             ->where('status', '0') //未隐藏
-            ->order('created_at DESC')
+            ->order('`created_at` DESC')
             ->limit(($page - 1) * $perpage, $perpage)
             ->fetchAll();
     }
@@ -36,5 +36,13 @@ class Score extends NotORM
             ->order('created_at DESC')
             ->limit(($page - 1) * $perpage, $perpage)
             ->fetchAll();
+    }
+    public function getScoreSearchCount($title)
+    {
+        $total = $this->getORM()
+            ->where('title LIKE ?', '%' . $title . '%')
+            ->count('id');
+
+        return intval($total);
     }
 }

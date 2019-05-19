@@ -69,8 +69,8 @@ class Upload extends Api
             throw new BadRequestException("上传失败: " . $result['error']);
         }
         return [
-            'id' => $result['id'],
-            'url' => $result['url']
+            'id' => intval($result['id']),
+            'image_url' => $result['image_url']
         ];
     }
 }
