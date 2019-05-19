@@ -2,6 +2,8 @@
 
 namespace App\Common;
 
+use PhalApi\Exception\BadRequestException;
+
 /**
  * 该类用于自定义返回格式接口。
  *  - 重写后，请求地址变成形如 `/index.php?r=Namespace/Class/Action` 
@@ -25,7 +27,6 @@ class Request extends \PhalApi\Request
             $service = trim($service, "\/");
             return 'App.' . str_replace('/', '.', $service);
         }
-
         return parent::getService();
     }
 }

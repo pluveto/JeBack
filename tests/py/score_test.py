@@ -15,7 +15,7 @@ currentFileName = getframeinfo(cf).filename
 
 
 testNum = 0
-
+testPassNum = 0
 
 def getNum():
     global testNum
@@ -95,6 +95,7 @@ if jsonPass:
     log.info("id: " + str(jsonObj['data']['id']), 1)
     if 'id' in jsonObj['data']:
         log.success('测试通过\n', 1)
+        testPassNum+=1
 
 
 timestamp = time.time()
@@ -129,6 +130,7 @@ if jsonPass:
         log.info("id: " + str(jsonObj['data']['id']), 1)
         img_id = jsonObj['data']['id']
         log.success('测试通过\n', 1)
+        testPassNum+=1
 
 
 timestamp = time.time()
@@ -167,7 +169,7 @@ if jsonPass:
     scoreId = jsonObj['data']['id']
     if 'id' in jsonObj['data']:
         log.success('测试通过\n', 1)
-
+        testPassNum += 1
 
 timestamp = time.time()
 sign = sha1(str(timestamp) + username + token)
@@ -202,7 +204,7 @@ if jsonPass:
         log.info("id: " + str(jsonObj['data']['id']), 1)
         img_id = jsonObj['data']['id']
         log.success('测试通过\n', 1)
-
+        testPassNum += 1
 
 timestamp = time.time()
 sign = sha1(str(timestamp) + username + token)
@@ -241,7 +243,7 @@ if jsonPass:
 
     if 'id' in jsonObj['data']:
         log.success('测试通过\n', 1)
-
+        testPassNum += 1
 
 timestamp = time.time()
 sign = sha1(str(timestamp) + username + token)
@@ -269,9 +271,8 @@ if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     log.info("data: " + str(jsonObj['data']), 1)
 
-    if 'id' in jsonObj['data']:
-        log.success('测试通过\n', 1)
-
+    log.success('测试通过\n', 1)
+    testPassNum += 1
 
 timestamp = time.time()
 sign = sha1(str(timestamp) + username + token)
@@ -299,9 +300,9 @@ if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     #log.info("data: " + str(jsonObj['data']), 1)
 
-    if 'id' in jsonObj['data']:
-        log.success('测试通过\n', 1)
-
+    
+    log.success('测试通过\n', 1)
+    testPassNum += 1
 
 timestamp = time.time()
 sign = sha1(str(timestamp) + username + token)
@@ -329,10 +330,39 @@ if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     #log.info("data: " + str(jsonObj['data']), 1)
 
-    if 'id' in jsonObj['data']:
-        log.success('测试通过\n', 1)
 
+    log.success('测试通过\n', 1)
+    testPassNum += 1
+
+
+timestamp = time.time()
+sign = sha1(str(timestamp) + username + token)
+api = "/score/remove"
+log.info(api+'    删除之前创建的曲谱 (%s:%d)' %
+         (currentFileName, cf.f_lineno), 0, getNum())
+res = requests.post(baseUrl + api, data={
+    'username': username,
+    'timestamp': timestamp,
+    'sign': sign,
+
+    'id': scoreId,
+}, allow_redirects=False)
+jsonRaw = jsbeautifier.beautify(res.text)
+log.response(jsonRaw)
+try:
+    jsonObj = json.loads(jsonRaw)
+    jsonPass = True
+except:
+    log.error("响应 body 不是有效 json")
+    log.response(res.text, 1)
+    jsonPass = False
+
+if jsonPass:
+    log.info("ret: " + str(jsonObj['ret']), 1)
+    log.success('测试通过\n', 1)
+    testPassNum += 1
 
 stopwatch.stop()
-log.info("测试结束, 一共 " + str(testNum) + " 个测试, 用时 " + str(stopwatch))
+log.info("测试结束, 一共 %s 个测试, 成功 %s 个, 失败 %s 个, 用时 %s " % (str(testNum),
+                                                        str(testPassNum), str(testNum-testPassNum), str(stopwatch)))
 print()

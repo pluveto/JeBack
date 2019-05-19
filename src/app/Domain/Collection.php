@@ -123,4 +123,17 @@ class Collection
         $collcetionModel = new CollectionModel();
         return $collcetionModel->searchByName($title);
     }
+
+    /**
+     * 检查曲谱是否存在
+     *
+     * @param integer $collectionId
+     * @return void
+     */
+    public function checkCollectionExist(int $collectionId)
+    {
+        $model = new Model();
+        $score = $model->get($collectionId);
+        return $score != null;
+    }
 }

@@ -51,6 +51,7 @@ class Score
         return $model->insert([
             'title' => $title,
             'user_id' => \App\Domain\Auth::$currentUser['id'],
+            'username' => \App\Domain\Auth::$currentUser['username'],
             'text' => $text,
             'alias' => $alias,
             'anime' => $anime,
@@ -116,21 +117,8 @@ class Score
         $userDomain = new \App\Domain\User();
 
         $rs = array('items' => array(), 'total' => 0);
-        foreach ($items as &$item) {
-
-            // 已经2019-5-19 01:36:10了, 肝不动了, 
-            // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力
-            $item['user'] = $userDomain->getUserSimpleInfo($item['user_id']);
-            $item['user_id'] = null;
-
-
-            $item['image_url'] =  $uploadDomain->getScoreImageUrl($item['id']);
-            $item['image_id'] = null;
-
-            $item = array_filter($item);
-        }
-
-
+        // 已经2019-5-19 01:36:10了, 肝不动了, 
+        // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力        
         $rs['items'] = $items;
         $rs['total'] = $total;
         return $rs;

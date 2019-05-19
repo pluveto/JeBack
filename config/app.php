@@ -66,8 +66,8 @@ return array(
             ['POST', '/', 'site.index'],
 
             // 1.auth
+            [['POST', 'GET'], '/auth/nonce', 'auth.getNonce'],
             ['POST', '/auth', 'auth.index'],
-            ['POST', '/auth/nonce', 'auth.getNonce'],
             ['POST', '/auth/captch/phone', ''],
             ['POST', '/auth/captch/email', 'auth.getCaptchByEmail'],
             ['POST', '/auth/register/phone', ''],
@@ -117,20 +117,20 @@ return array(
             ['POST', '/tag/attach/add', ''],
             ['POST', '/tag/attach/remove', ''],
 
-            // 6. commment of score
-            ['POST', '/score_comment/add    ', ''],
-            ['POST', '/score_comment', ''],
-            ['POST', '/score_comment/update', ''],
-            ['POST', '/score_comment/remove', ''],
+            // 6. commment
+            ['POST', '/comment/reply', 'comment.addCommentOnComment'],
+            ['POST', '/comment/remove', 'comment.removeComment'],
 
-            // 7. comment of collection
-            ['POST', '/collection_comment/add    ', ''],
-            ['POST', '/collection_comment', ''],
-            ['POST', '/collection_comment/update', ''],
-            ['POST', '/collection_comment/remove', ''],
+            // 7. comment of ...
+            ['POST', '/comment/score/add', 'comment.addCommentOnScore'],
+            ['POST', '/comment/score', 'comment.getCommentsOnScore'],
+
+
+            ['POST', '/comment/collection/add', 'comment.addCommentOnCollection'],
+            ['POST', '/comment/collection', 'comment.getCommentOnCollection'],
 
             // 8. favorite of score
-            ['POST', '/score_favorite/add    ', ''],
+            ['POST', '/score_favorite/add', ''],
             ['POST', '/score_favorite/list', ''],
             ['POST', '/score_favorite', ''],
             ['POST', '/score_favorite/update', ''],

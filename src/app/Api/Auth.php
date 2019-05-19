@@ -17,9 +17,6 @@ class Auth extends Api
     {
         return array(
             'index' => array(),
-            'loginByEmail' => array(
-                'email' => array('name' => 'email')
-            ),
             //请勿在此处进行正则校验, 因为这样不利于自定义异常时返回结果.
             'getCaptchByEmail' => array(
                 'email' => array('name' => 'email', 'require' => true, 'min' => 5, 'max' => 255)

@@ -79,16 +79,16 @@
     * 移除标签与谱册的关联      /tag/attach/remove
 
 * 曲谱的评论
-    * 创建一个评论              /score_comment/add    
-    * 获取一个评论              /score_comment
-    * 编辑一个评论              /score_comment/update
-    * 删除一个评论              /score_comment/remove
+    * 创建一个评论              /comment/score/add    
+    * 获取一个评论              /comment/score
+    * 编辑一个评论              /comment/score/update
+    * 删除一个评论              /comment/score/remove
 
 * 谱册的评论
-    * 创建一个评论              /collection_comment/add    
-    * 获取一个评论              /collection_comment
-    * 编辑一个评论              /collection_comment/update
-    * 删除一个评论              /collection_comment/remove
+    * 创建一个评论              /comment/collection/add    
+    * 获取一个评论              /comment/collection
+    * 编辑一个评论              /comment/collection/update
+    * 删除一个评论              /comment/collection/remove
 
 * 曲谱的收藏
     * 创建一个收藏              /score_favorite/add    

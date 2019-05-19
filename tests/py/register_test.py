@@ -14,31 +14,15 @@ tests = {}
 
 tests[1] = ''
 # print('\n\n\n\n\n\n\n\n')
-log.info(" ================================ 登录测试 ================================ ")
+log.info(" ================================ 注册测试 ================================ ")
 print()
 
 
-log.info('/auth/nonce  '+'进行 GET 请求, 期待返回 Unexpected method 错误', 0, '#1 ')
-res = requests.get(baseUrl + "/auth/nonce")
+log.info('/auth/captch/email  '+'进行 POST 请求, 期待返回 ret=200 & nonce', 0, '#2 ')
+res = requests.post(baseUrl + "/auth/captch/email",
+                    data={}, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-log.response(jsonRaw, 1)
-jsonPass = False
-try:
-    jsonObj = json.loads(jsonRaw)
-    jsonPass = True
-except:
-    log.error("返回不是有效json")
-if jsonPass:
-    log.info("ret: " + str(jsonObj['ret']), 1)
-    log.info("msg: " + str(jsonObj['msg']), 1)
-if 'ret' in jsonObj and jsonObj['ret'] == 405:
-    log.success('测试通过\n', 1)
-
-
-log.info('/auth/nonce  '+'进行 POST 请求, 期待返回 ret=200 & nonce', 0, '#2 ')
-res = requests.post(baseUrl + "/auth/nonce", data={}, allow_redirects=False)
-jsonRaw = jsbeautifier.beautify(res.text)
-log.response(jsonRaw, 1)
+# log.response(jsonRaw, 1)
 jsonPass = False
 try:
     jsonObj = json.loads(jsonRaw)
@@ -58,7 +42,7 @@ password = 'apitesting'
 nonce = jsonObj['data']['nonce']
 sign = hashlib.sha1((nonce + email + hashlib.sha1(
     ("moeje" + password).encode("utf-8")).hexdigest()).encode("utf-8")).hexdigest(),
-log.info(str(sign))
+
 log.info('/auth/login/email  '+'使用 nonce 进行登录, 期待返回 ret = 200 && token', 0, '#3 ')
 res = requests.post(baseUrl + "/auth/login/email",
                     data={
@@ -68,7 +52,7 @@ res = requests.post(baseUrl + "/auth/login/email",
                         'sign': sign
                     }, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-log.response(jsonRaw, 1)
+# log.response(jsonRaw, 1)
 jsonPass = False
 try:
     jsonObj = json.loads(jsonRaw)
@@ -91,7 +75,7 @@ res = requests.post(baseUrl + "/auth/login/email",
                         'sign': sign
                     }, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-log.response(jsonRaw, 1)
+# log.response(jsonRaw, 1)
 jsonPass = False
 try:
     jsonObj = json.loads(jsonRaw)
