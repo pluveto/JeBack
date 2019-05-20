@@ -118,7 +118,14 @@ class Score
 
         $rs = array('items' => array(), 'total' => 0);
         // 已经2019-5-19 01:36:10了, 肝不动了, 
-        // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力        
+        // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力
+        foreach ($items as &$item) {
+            $item['image_url'] =  $uploadDomain->getScoreImageUrl($item['id']);
+            $item['image_id'] = null;
+            $item = array_filter($item);
+        }
+
+
         $rs['items'] = $items;
         $rs['total'] = $total;
         return $rs;
@@ -151,7 +158,7 @@ class Score
             'id'            => $score['id'],
             'title'         => $score['title'],
             'text'          => $score['text'],
-            'user'          => $userDomain->getUserSimpleInfo($score['user_id']),
+            'username'          => $score['username'],
             'alias'         => json_decode($score['alias']),
             'anime'         => $score['anime'],
             'key'           => $score['key'],

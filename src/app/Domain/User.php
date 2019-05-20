@@ -11,6 +11,12 @@ use App\Domain\Group as GroupDomain;
  */
 class User
 {
+    public function checkUserExist(int $scoreId)
+    {
+        $userModel = new UserModel();
+        $score = $userModel->get($scoreId, 'id');
+        return $score != null;
+    }
     public function getUserSimpleInfo($id)
     {
         $userModel = new UserModel();

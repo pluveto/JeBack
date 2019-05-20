@@ -32,10 +32,14 @@ return array(
      */
     'service_whitelist' => array(
         'site.index',
+
         'auth.getNonce',
         'auth.getCaptchByEmail',
         'auth.loginByEmail',
-        'auth.registerByEmail'
+        'auth.registerByEmail',
+
+        'favorite.listFavoriteScore',
+        'favorite.listFavoriteCollection',
     ),
     /**
      * Auth 模块
@@ -130,18 +134,14 @@ return array(
             ['POST', '/comment/collection', 'comment.getCommentOnCollection'],
 
             // 8. favorite of score
-            ['POST', '/score_favorite/add', ''],
-            ['POST', '/score_favorite/list', ''],
-            ['POST', '/score_favorite', ''],
-            ['POST', '/score_favorite/update', ''],
-            ['POST', '/score_favorite/remove', ''],
+            ['POST', '/favorite/score/add', 'favorite.addFavoriteScore'],
+            [['POST', 'GET'], '/favorite/score/list', 'favorite.listFavoriteScore'],
+            ['POST', '/favorite/score/remove', 'favorite.removeFavoriteScore'],
 
             // 9. favorite of collection
-            ['POST', '/collection_favorite/add', ''],
-            ['POST', '/collection_favorite/list', ''],
-            ['POST', '/collection_favorite', ''],
-            ['POST', '/collection_favorite/update', ''],
-            ['POST', '/collection_favorite/remove', ''],
+            ['POST', '/favorite/colletion/add', 'favorite.addFavoriteCollection'],
+            [['POST', 'GET'], '/favorite/colletion/list', 'favorite.listFavoriteCollection'],
+            ['POST', '/favorite/colletion/remove', 'favorite.removeFavoriteCollection'],
 
             // 10. follow
             ['POST', '/follow/list/follwing', 'follow.getFollowingByUser'],
