@@ -85,8 +85,51 @@ class Collection extends NotORM
      * @param string 谱册名字
      * @return 返回相关谱册
      */
-    public function searchByName($name)
+    public function searchByName($title, $page, $pageSize)
     {
-        return $this->getORM()->where('title LIKE ?', '%' . $name . '%')->fetchAll();
+        return $this->getORM()
+            ->select('*')
+            ->where('title LIKE ?', '%' . $title . '%')
+            ->order('updated_at DESC')
+            ->limit(($page - 1) * $pageSize, $pageSize)
+            ->fetchAll();
+    }
+
+
+    /**
+     * 根据谱册id查询 创建者id
+     * @param int $id 谱册id
+     * @return 返回创建者id
+     */
+    public function getOwnerId($id)
+    {
+        return $this->getORM()
+            ->select('owner_id')
+            ->where('id', $id)
+            ->fetchOne();
+    }
+
+    /**
+     * 根据谱册id 查找出所有谱子id
+     * @param int $collectionId
+     * @return array 返回所有谱子的id
+     */
+    public function getScoreIdByCollectionId($collectionId)
+    {
+        $tabel = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        return $ormCollection->select('score_id')
+            ->where('collection_id', $collectionId)
+            ->fetchAll();
+    }
+
+    public function update($collectionId, $title, $description, $imageId, $imagePath, $addScore, $delectScore)
+    {
+        //开启事物
+        $tabel = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        $ormCollection->transaction('BEGIN');
+
+
     }
 }

@@ -3,6 +3,7 @@ namespace App\Domain;
 
 use App\Model\Upload as Model;
 use App\Model\Score as ScoreModel;
+use App\Model\Collection as CollectionModel;
 
 /**
  * 文件上传 Domain 类
@@ -19,13 +20,25 @@ class Upload
         $model = new Model();
         return $model->get($imageId);
     }
+
+    public function getImageByCollectionId(int $CollectionId)
+    {
+        $CollectionModel = new CollectionModel();
+        $imageId =  $CollectionModel->get($CollectionId, 'image_id')['image_id'];
+        $model = new Model();
+        return $model->get($imageId);
+    }
+
     /**
      * 把一个临时图片正式保存, (临时文件被移动, 之后其数据库item也被删除)
      *
-     * @param int $tempId
+     * @param int $tempId 临时文件在数据库的id
+     * @param int $type 图片属于的内容类型，0 曲谱 , 1 谱册
+     * @param string $imageUrl 传入这个参数可以用来正式图片的url
+     * @param string $imageNewPath 传入这个参数可以用来正式图片的相对路径
      * @return int 插入后的正式id
      */
-    public function saveImage($tempId, int $type)
+    public function saveImage($tempId, int $type, &$imageUrl = null, &$imageNewPath = null)
     {
         $tempImage = $this->getTempImage($tempId);
         $model = new Model();
@@ -34,12 +47,20 @@ class Upload
         $newPath = \App\Helper\Path::getImageDir()   . '/' . basename($tempImage['path']);
         rename($oldPath, $newPath);
         $model->removeTempImage($tempId);
+        $relativePathOfnewPath = \App\Helper\Path::getRelativePathToPublic($newPath);
         $id =  intval($model->insert([
-            'path' => \App\Helper\Path::getRelativePathToPublic($newPath),
+            'path' => $relativePathOfnewPath,
             'user_id' => \App\Domain\Auth::$currentUser['id'],
             'type' => $type, // 0 曲谱 , 1 谱册
             'created_at' => time(),
         ]));
+        // 减少查询次数的优化
+        if ($imageUrl != null) {
+            $imageUrl = $this->getUrlBasedOnPath($relativePathOfnewPath);
+        }
+        if ($imageNewPath != null) {
+            $imageNewPath = $relativePathOfnewPath;
+        }
         return $id;
     }
     /**
@@ -66,7 +87,12 @@ class Upload
         $tempImage = $model->getTempImage($tempImageId);
         return $tempImage && ($tempImage['user_id'] == $userId);
     }
-
+    /**
+     * Undocumented function
+     *
+     * @param integer $id
+     * @return void
+     */
     public function removeFile(int $id)
     {
         $model = new Model();
@@ -127,12 +153,18 @@ class Upload
             'image_url' => $url
         ];
     }
-
+    /*
+    此方法启用，请转用 getUrlBasedOnPath 结合 image_path 字段实现
     public function getScoreImageUrl($scoreId)
     {
         $image = $this->getImageByScoreId($scoreId);
         if ($image == null) return null;
         $url = \App\Helper\Path::baseUrl() . $this->getImageByScoreId($scoreId)['path'];
+        return $url;
+    }*/
+    public function getUrlBasedOnPath($path)
+    {
+        $url = \App\Helper\Path::baseUrl() . $path;
         return $url;
     }
 }

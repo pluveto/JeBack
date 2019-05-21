@@ -45,7 +45,8 @@ class Score
         int    $type,
         string $description,
         string $addition,
-        int    $image_id
+        int    $imageId,
+        string $imagePath
     ) {
         $model = new Model();
         return $model->insert([
@@ -59,7 +60,8 @@ class Score
             'type' => $type,
             'description' => $description,
             'addition' => $addition,
-            'image_id' => $image_id,
+            'image_id' => $imageId,
+            'image_path' => $imagePath,
             'status' => 0,
             'created_at' => time(),
             'updated_at' => time(),
@@ -75,7 +77,8 @@ class Score
         int    $type,
         string $description,
         string $addition,
-        int    $image_id
+        int    $imageId,
+        string $imagePath
     ) {
         // 过滤 Addition 的换行符并简单过滤标签, 至于过滤真正的 XSS(比如我填个 " onfocus="evil() ) , 则是前端的事情
         $title = str_replace('\n', '', strip_tags($title));
@@ -91,7 +94,8 @@ class Score
             'type' => $type,
             'description' => $description,
             'addition' => $addition,
-            'image_id' => $image_id,
+            'image_id' => $imageId,
+            'image_path' => $imagePath,
             'status' => 0,
             'updated_at' => time(),
         ]);
@@ -120,7 +124,7 @@ class Score
         // 已经2019-5-19 01:36:10了, 肝不动了, 
         // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力
         foreach ($items as &$item) {
-            $item['image_url'] =  $uploadDomain->getScoreImageUrl($item['id']);
+            $item['image_url'] =  $uploadDomain->getUrlBasedOnPath($item['image_path']);
             $item['image_id'] = null;
             $item = array_filter($item);
         }
@@ -165,7 +169,7 @@ class Score
             'type'          => $score['type'],
             'description'   => $score['description'],
             'addition'      => $score['addition'],
-            'image_url'     => $uploadDomain->getScoreImageUrl($scoreId),
+            'image_url'     => $uploadDomain->getUrlBasedOnPath($score['image_path']),
         ));
     }
 }

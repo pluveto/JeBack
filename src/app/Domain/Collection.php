@@ -20,15 +20,15 @@ class Collection
      * @param string title 谱册名
      * @param string description 描述
      */
-    public function createCollection($username, $image, $title, $description)
+    public function createCollection($userId, $imagePath, $imageId, $title, $description)
     {
         $userModel = new UserModel();
         $collcetionModel = new CollectionModel();
 
-        $user = $userModel->getUserByUsername($username);
         $data = array(
-            'user_id' => $user['id'],
-            'image' => $image,
+            'user_id' => $userId,
+            'image_path' => $imagePath,
+            'image_id' => $imageId,
             'title' => $title,
             'description' => $description,
             'status' => 0,
@@ -118,10 +118,10 @@ class Collection
      * @param string title
      * @return 相关谱册列表
      */
-    public function search($title)
+    public function search($title, $page, $pageSize)
     {
         $collcetionModel = new CollectionModel();
-        return $collcetionModel->searchByName($title);
+        return $collcetionModel->searchByName($title, $page, $pageSize);
     }
 
     /**
@@ -135,5 +135,50 @@ class Collection
         $model = new Model();
         $score = $model->get($collectionId);
         return $score != null;
+    }
+
+
+    /**
+     * 通过谱册id获得创建者的的id
+     * @param int $id
+     * @return 返回创建者id
+     */
+    public function getOwnerId($id)
+    {
+        $model = new Model();
+        return $model->getOwnerId($id);
+    }
+
+    /**
+     * 检查谱册是否存在并属于某用户
+     *
+     * @param Type $var
+     * @return void
+     */
+    public function checkIdOwnerMatch(int $collectionId, int $userId)
+    {
+        $model = new Model();
+        $collection = $model->get($collectionId);
+        return $collection && ($collection['user_id'] == $userId);
+    }
+
+
+    /**
+     * 更新谱册
+     */
+    public function update($collectionId, $title, $description, $score_id, $imageId, $imagePath)
+    {
+        $model = new Model();
+
+        $scoreIdList = $model->getScoreIdByCollectionId($collectionId);
+        $addScore = array_diff($score_id, $scoreIdList);
+        $delectScore = array_diff($scoreIdList, $score_id);
+        $addData = array();
+        for ($i = 0; $i < count(addScore); $i++) {
+            $data[] = ['collection_id' => $collectionId, 'score_id' => $addScore[i]];
+        }
+        for ($i = 0; $i < count(delectScore); $i++) {
+            $data[] = ['collection_id' => $collectionId, 'score_id' => $delectScore[i]];
+        }
     }
 }

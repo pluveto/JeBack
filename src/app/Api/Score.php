@@ -20,7 +20,7 @@ class Score extends Api
                 'title' => ['name' => 'title', 'require' => true, 'min' => 1, 'max' => 255, 'type' => 'string'],
                 'text' => ['name' => 'text', 'require' => true, 'min' => 1, 'max' => 10000, 'type' => 'string'],
 
-                // 注意: json 数组的 $this 绑定值已经转换为了 php 数组
+                // 注意: json 数组的 $this 绑定值（$this->alias）已经转换为了 php 数组
                 'alias' => ['name' => 'alias', 'require' => false, 'min' => 0, 'max' => 512, 'type' => 'array', 'format' => 'json', 'default' => '[]'],
                 'anime' => ['name' => 'anime', 'require' => false, 'min' => 0, 'max' => 512, 'type' => 'string', 'default' => '单曲'],
                 'key' =>   [
@@ -95,10 +95,11 @@ class Score extends Api
         }
 
         /** ============== 正式业务 ============== */
+        $imageUrl = "";
+        $imagePath = "";
         //如果提交了图片id, 就把图片以正式文件转存
         if ($this->temp_image_id > 0) {
-
-            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0);
+            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0, $imageUrl, $imagePath);
         } else {
             $this->image_id = 0;
         }
@@ -114,13 +115,14 @@ class Score extends Api
             $this->type,
             $this->description,
             $this->addition,
-            $this->image_id
+            $this->image_id,
+            $imagePath
         );
         $return =  [
             'id' => intval($id)
         ];
         if ($this->image_id > 0) {
-            $return['image_url'] = $uploadDomain->getScoreImageUrl($id);
+            $return['image_url'] = $imageUrl;
         }
         return $return;
     }
@@ -152,20 +154,24 @@ class Score extends Api
         }
 
         /** ============== 正式业务 ============== */
+
+        // 两个冗余字段，减少查表次数
+        $imageUrl = "";
+        $imagePath = "";
         // 如果提交了新的图片id, 但是之前已经关联了图片, 就删除图片解除关联
         $imageOnServer = $uploadDomain->getImageByScoreId($this->id);
         if ($imageOnServer != null && $this->temp_image_id > 0) {
             //delete old
             $uploadDomain->removeFile($imageOnServer['id']);
-            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0);
+            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0, $imageUrl, $imagePath);
         } elseif ($imageOnServer != null && $this->temp_image_id == 0) {
             $this->image_id = $imageOnServer['id'];
         } elseif ($imageOnServer == null && $this->temp_image_id > 0) {
-            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0);
+            $this->image_id = $uploadDomain->saveImage($this->temp_image_id,  0, $imageUrl, $imagePath);
         }
         // 第三四种情况无需考虑
         if ($this->image_id == null) {
-            $this->image_id = 0;
+            $this->image_id = 0; //image_id 为0 就表示该内容不配图
         }
         $domain->updateScore(
             $this->id,
@@ -177,13 +183,14 @@ class Score extends Api
             $this->type,
             $this->description,
             $this->addition,
-            $this->image_id
+            $this->image_id,
+            $imagePath
         );
         $return =  [
             'id' => intval($this->id)
         ];
         if ($this->image_id > 0) {
-            $return['image_url'] = $uploadDomain->getScoreImageUrl($this->id);
+            $return['image_url'] = $imageUrl;
         }
         return $return;
     }

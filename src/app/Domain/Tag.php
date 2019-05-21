@@ -12,7 +12,7 @@ use App\Model\Upload as UploadModel;
  */
 class Tag
 {
-    public function checkTagExistByTitle($title)
+    public function checkTagExistByTitle(string $title)
     {
         $model = new Model();
         return null != $model->getTagByTitle($title);
@@ -22,7 +22,14 @@ class Tag
         $model = new Model();
         return intval($model->insert(['title' => $title]));
     }
-    public function packUpTagList($page, $perpage)
+    /**
+     * 为客户端打包标签列表
+     *
+     * @param int $page
+     * @param int $perpage
+     * @return void
+     */
+    public function packUpTagList(int $page, int $perpage)
     {
         $model = new Model();
         $items = $model->getTagList($page, $perpage);
@@ -33,7 +40,7 @@ class Tag
         $rs['perpage'] =  $perpage;
         return $rs;
     }
-    public function searchTagByTitle($keyword, $page, $perpage)
+    public function searchTagByTitle(string $keyword, int $page, int $perpage)
     {
         $model = new Model();
         $items = $model->searchTagByTitle($keyword, $page, $perpage);
@@ -45,10 +52,10 @@ class Tag
         $rs['perpage'] =  $perpage;
         return $rs;
     }
-    public function getContentIdsUnderTag($tagId)
+    public function getContentIdsUnderTag($tagId, $type, $page, $perpage)
     {
         $model = new Model();
-        $model->getContentUnderTag($tagId, 'id');
+        $model->getContentUnderTag($tagId, $type, $page, $perpage);
     }
     public function removeTag($tagId)
     {
@@ -60,6 +67,14 @@ class Tag
         $model = new Model();
         return null != $model->get($tagId);
     }
+    /**
+     * 检查某内容是否有某标签
+     *
+     * @param int $tagId
+     * @param int $contentId
+     * @param int $type 0 为曲谱，1 为谱册
+     * @return void
+     */
     public function checkRelationshipExist($tagId, $contentId, $type)
     {
         $model = new Model();
@@ -68,7 +83,7 @@ class Tag
     public function addTagOnContent($tagId, $contentId, $type)
     {
         $model = new Model();
-        $model->addTagOnContent($tagId, $contentId, $type);
+        $model->addTagOnContent($tagId, $contentId, $type, \App\Domain\Auth::$currentUser['id']);
     }
     public function packUpTagsOnContent($contentId, $page, $perpage, $type)
     {
@@ -82,9 +97,9 @@ class Tag
         $rs['perpage'] =  $perpage;
         return $rs;
     }
-    public function removeTagOnContent($tagId, $contentId, $type)
+    public function removeTagsOnContent($tagId, $contentId, $type)
     {
         $model = new Model();
-        $model->removeTagOnContent($tagId, $contentId, $type);
+        $model->removeTagsOnContent($tagId, $contentId, $type);
     }
 }
