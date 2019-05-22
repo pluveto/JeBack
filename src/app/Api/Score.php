@@ -77,6 +77,21 @@ class Score extends Api
      * @routine /score/add
      * @return array 刚返回的曲谱id
      */
+    /**
+     * @api {post} /score/add 添加曲谱
+     * @apiDescription 添加曲谱.
+     * @apiVersion 2.0.0
+     * @apiName name
+     * @apiPermission user
+     * @apiGroup Score
+     *
+     * @apiParam {Type} field  Field description.
+     *
+     * @apiSuccess {Type} field Field description.
+     *
+     * @apiSuccessExample 成功响应:
+    json
+     */
     public function addScore()
     {
         $domain = new Domain();

@@ -42,6 +42,7 @@ class Auth extends Api
 
     /**
      * 默认接口服务
+     * post
      * @desc 默认接口服务，当未指定接口服务时执行此接口服务
      * @return string title 标题
      * @return string content 内容
@@ -61,11 +62,21 @@ class Auth extends Api
             )
         );
     }
-
     /**
-     * 获取 nonce (有效期为30s)
-     *
-     * @return void
+     * @api {post} /auth/nonce 获取 nonce
+     * @apiName getNonce
+     * @apiGroup Auth
+     * @apiVersion 2.0.0
+     * @apiPermission none
+     * @apiSuccess {String} nonce 获得的随机串.
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "nonce": "ffc0f836ee89e15eec0441a4ba94e92ee0ff1560"
+                },
+                "msg": ""
+            }
      */
     public function getNonce()
     {
@@ -93,6 +104,28 @@ class Auth extends Api
      * 所需参数: email, nonce, sign
      * 
      * @return void
+     */
+    /**
+     * @api {post} /auth/login/email 通过邮箱登录
+     * @apiVersion 2.0.0
+     * @apiPermission none
+     * @apiName loginByEmail
+     * @apiGroup Auth
+     *
+     * @apiParam {String} email  邮箱地址.
+     * @apiParam {String} nonce  随机串.
+     * @apiParam {String} sign  登录签名, 算法为 sign = sha1(nonce + email + sha1('moeje' + password)).
+     *
+     * @apiSuccess {String} token 有效期为30天(注销自动过期)的token.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "token": "9cf536625a810f538dfae11d321a0c987db63bd4"
+                },
+                "msg": ""
+            }
      */
     public function loginByEmail()
     {
@@ -124,15 +157,21 @@ class Auth extends Api
         return $userInfo;
     }
     /**
-     * 发送邮件验证码. 不检查邮箱存在性. 已注册的用户也可以接收验证码.
+     * @api {post} /auth/captch/email 发送邮件验证码
+     * @apiDescription 不检查邮箱存在性. 已注册的用户也可以接收验证码. 适用于注册/异常登录验证/找回密码/更改密码/注销.
+     * @apiVersion 2.0.0
+     * @apiPermission none
+     * @apiName getCaptchByEmail
+     * @apiGroup Auth
      * 
-     * 应用场景: 注册/异常登录验证/找回密码/更改密码/注销
-     * 
-     * 所需参数: email
-     * 
-     * 路由: /auth/login/email
-     * 
-     * @return void
+     * @apiParam {String} email  邮箱地址.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {},
+                "msg": ""
+            }
      */
     public function getCaptchByEmail()
     {
@@ -173,6 +212,26 @@ class Auth extends Api
      * 所需参数: username, email, captch, password
      * 
      * @return void
+     */
+    /**
+     * @api {post} /auth/register/email 用户邮箱注册
+     * @apiDescription 注册时, 请求体将不可避免地用明文传参.所以建议开启SSL.
+     * @apiVersion 2.0.0
+     * @apiPermission none
+     * @apiName registerByEmail
+     * @apiGroup Auth
+     *
+     * @apiParam {String} username  用户名.
+     * @apiParam {String} email  用户邮箱.
+     * @apiParam {String} captch  验证码.
+     * @apiParam {String} password  密码.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {},
+                "msg": ""
+            }
      */
     public function registerByEmail()
     {
@@ -215,8 +274,18 @@ class Auth extends Api
 
 
     /**
-     * 用户注销
-     * 
+     * @api {post} /auth/logout 用户退出登录
+     * @apiDescription 退出登录, 并清除登录凭据(token).
+     * @apiVersion 2.0.0
+     * @apiName logout
+     * @apiPermission user
+     * @apiGroup Auth
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {},
+                "msg": ""
+            }
      */
     public function logout()
     {

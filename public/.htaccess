@@ -1,7 +1,7 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(?!.*\..+g$).*$ index.php?r=$1 [QSA,PT,L]
+RewriteRule ^(?!.*\..+g$).*$ index.php?$1 [QSA,PT,L]
 
 #RewriteEngine On
 ## 下面是在根目录，文件夹要修改路径

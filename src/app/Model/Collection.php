@@ -11,7 +11,6 @@ use PhalApi\Model\NotORMModel as NotORM;
 class Collection extends NotORM
 {
     private const RELATIONSHIP = 'collection_score';
-
     /**
      * 创建一个空谱册
      * @param array $data
@@ -123,13 +122,23 @@ class Collection extends NotORM
             ->fetchAll();
     }
 
-    public function update($collectionId, $title, $description, $imageId, $imagePath, $addScore, $delectScore)
+
+    /**
+     * 更新谱册
+     * @param array data
+     * @return int 返回更新行数
+     */
+    public function update($data)
     {
         //开启事物
+        // $tabel = self::RELATIONSHIP;
+
+        // \PhalApi\DI()->notorm->beginTransaction('db_master');
+        // $add = \PhalApi\DI()->notorm->$tabel->insert_multi($addScore);
+        // $delete = \PhalApi\DI()->notorm->$tabel->insert_multi($addScore);
         $tabel = self::RELATIONSHIP;
         $ormCollection = \PhalApi\DI()->notorm->$tabel;
-        $ormCollection->transaction('BEGIN');
 
-
+        return $ormCollection->where('id', $data['id'])->update($data);
     }
 }

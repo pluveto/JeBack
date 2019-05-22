@@ -52,10 +52,10 @@ class Tag
         $rs['perpage'] =  $perpage;
         return $rs;
     }
-    public function getContentIdsUnderTag($tagId, $type, $page, $perpage)
+    public function getContentIdsUnderTag($tagId )
     {
         $model = new Model();
-        $model->getContentUnderTag($tagId, $type, $page, $perpage);
+        $model->getContentIdsUnderTag($tagId );
     }
     public function removeTag($tagId)
     {

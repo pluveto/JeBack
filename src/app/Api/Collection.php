@@ -25,11 +25,9 @@ class Collection extends Api
             'getCollection' => array(
                 'collectionId' => array('name' => 'collectionId')
             ),
-            'list' => array(
+            'getCollectionList' => array(
                 'page' => array('name' => 'page'),
                 'pageSize' => array('name' => 'pageSize'),
-                'page' => array('name' => 'page'),
-                'pageSize' => array('name' => 'pageSize')
             ),
             'search' => array(
                 'title' => array('name' => 'title'),
@@ -39,8 +37,7 @@ class Collection extends Api
                 'collectionId' => array('name' => 'collectionId'),
                 'temp_image_id' => ['name' => 'temp_image_id', 'require' => false, 'min' => 0, 'max' => 255, 'type' => 'int', 'default' => 0], // 图片 id 为零表示不指定id
                 'title' => array('name' => 'title'),
-                'description' => array('name' => 'description'),
-                'score_id' => array('name' => 'score_id')
+                'description' => array('name' => 'description')
             ),
             'remove' => array(
                 'collectionId' => array('name' => 'collectionId')
@@ -54,6 +51,27 @@ class Collection extends Api
      * @param string temp_image_id 配图id
      * @param string title 谱册标题
      * @param string description 谱册描述
+     */
+    /**
+     * @api {post} /collection/add 创建谱册
+     * @apiDescription 创建谱册.
+     * @apiVersion 2.0.0
+     * @apiName addCollection
+     * @apiPermission user
+     * @apiGroup Collection
+     *
+     * @apiParam {Integer} [temp_image_id]  临时配图id.
+     *
+     * @apiSuccess {Integer} id 创建的谱册的id.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": 32
+                },
+                "msg": ""
+            }
      */
     public function addCollection()
     {
@@ -93,6 +111,7 @@ class Collection extends Api
     }
 
     /**
+     * 
      * 获取指定谱册
      * @param int collectionId
      * @return 返回指定谱册
@@ -101,7 +120,7 @@ class Collection extends Api
     {
         $domain = new Domain();
 
-        $collection = $domain->getCollection($collectionId);
+        $collection = $domain->getCollection($collectionId); //你这里得重写, 给的数据不够
         return $collection;
     }
 
@@ -111,7 +130,7 @@ class Collection extends Api
      * @param int pageSize 一页多少谱册
      * @return 返回结果
      */
-    public function list()
+    public function getCollectionList()
     {
         $domain = new Domain();
 
@@ -127,7 +146,7 @@ class Collection extends Api
      * @param int pageSize 一页多少谱册
      * @return array 相关谱册
      */
-    public function search()
+    public function searchCollectionByTitle()
     {
         $domain = new Domain();
 
@@ -143,10 +162,9 @@ class Collection extends Api
      * @param int temp_image_id 临时图片id
      * @param string title 谱册名
      * @param string description 描述
-     * @param array score_id 谱册 曲谱全部id
      * @return int 谱册id
-     */ 
-    public function update()
+     */
+    public function updateCollection()
     {
         $domain = new Domain();
         $uploadDomain = new \App\Domain\Upload();
@@ -181,7 +199,7 @@ class Collection extends Api
         $this->title = trim($this->title);
         $this->description = trim($this->description);
 
-        $domain->update($this->collectionId, $this->title, $this->description, $this->score_id, $this->image_id, $imagePath);
+        $domain->update($this->collectionId, $this->title, $this->description, $this->image_id, $imagePath);
 
         return ['id' => $this->collectionId];
     }

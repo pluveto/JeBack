@@ -54,12 +54,12 @@ class Tag extends NotORM
             ->limit(($page - 1) * $perpage, $perpage)
             ->fetchAll();
     }
-    public function getContentUnderTagCount(int $tagId, int $type)
+    public function getContentIdsUnderTag(int $tagId)
     {
         $table = self::RELATIONSHIP_TAG_TABLE;
         $orm = \PhalApi\DI()->notorm->$table;
         return intval($orm->where('tag_id', $tagId)
-            ->where('type', $type)
+            //->where('type', $type)
             ->count('id'));
     }
 
@@ -91,7 +91,7 @@ class Tag extends NotORM
             ->where('content_id', $contentId)
             ->limit(($page - 1) * $perpage, $perpage)
 
-            ->fetchOne();
+            ->fetchAll();
     }
     public function getTagsOnContentCount(int $contentId, int $type)
     {

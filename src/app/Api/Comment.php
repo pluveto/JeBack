@@ -56,6 +56,28 @@ class Comment extends Api
      *
      * @return void
      */
+    /**
+     * @api {post} /comment/replay 回复评论
+     * @apiDescription 回复评论.
+     * @apiVersion 2.0.0
+     * @apiName addCommentOnComment
+     * @apiPermission user
+     * @apiGroup Comment
+     *
+     * @apiParam {Integer} comment_id  要回复的评论的id.
+     * @apiParam {String} text  回复内容.
+     *
+     * @apiSuccess {Integer} id 发表的评论的id.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": 32
+                },
+                "msg": ""
+            }
+     */
     public function addCommentOnComment()
     {
         $domain = new Domain();
@@ -76,6 +98,23 @@ class Comment extends Api
      * 删除评论
      *
      * @return void
+     */
+    /**
+     * @api {post} /comment/remove 删除评论
+     * @apiDescription 删除评论(目前不许删除有子评论的评论).
+     * @apiVersion 2.0.0
+     * @apiName name
+     * @apiPermission user
+     * @apiGroup Comment
+     *
+     * @apiParam {Integer} comment_id  所要删除的评论的id.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {},
+                "msg": ""
+            }
      */
     public function removeComment()
     {
@@ -104,6 +143,28 @@ class Comment extends Api
      *
      * @return void
      */
+    /**
+     * @api {post} /comment/score/add 评论曲谱
+     * @apiDescription 评论曲谱.
+     * @apiVersion 2.0.0
+     * @apiName addCommentOnScore
+     * @apiPermission user
+     * @apiGroup Comment
+     *
+     * @apiParam {Integer} score_id  要评论的曲谱的id.
+     * @apiParam {String} text  回复内容.
+     *
+     * @apiSuccess {Integer} id 发表的评论的id.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": 32
+                },
+                "msg": ""
+            }
+     */
     public function addCommentOnScore()
     {
         $domain = new Domain();
@@ -123,6 +184,25 @@ class Comment extends Api
      *
      * @return void
      */
+    /**
+     * @api {post} /comment/score/list 获取对曲谱的评论
+     * @apiDescription 获取对曲谱的评论.
+     * @apiVersion 2.0.0
+     * @apiName name
+     * @apiPermission user
+     * @apiGroup Comment
+     *
+     * @apiParam {Integer} score_id  曲谱id.
+     * @apiParam {Integer} [page]  页码.
+     * @apiParam {Integer} [perpage]  每页数量.
+     *
+     * @apiSuccess {Object} .
+     *
+     * @apiSuccessExample 成功响应:
+    {}
+     * @todo 填坑
+    json
+     */
     public function getCommentsOnScore()
     {
         $domain = new Domain();
@@ -135,11 +215,32 @@ class Comment extends Api
         return $domain->packUpCommentsOnScore($this->score_id, $this->page, $this->perpage);
     }
 
-
     /**
      * 评论谱册
      *
      * @return void
+     */
+    /**
+     * @api {post} /comment/collection/add 评论谱册
+     * @apiDescription 评论谱册.
+     * @apiVersion 2.0.0
+     * @apiName addCommentOnCollection
+     * @apiPermission user
+     * @apiGroup Comment
+     *
+     * @apiParam {Integer} collection_id  要评论的谱册的id.
+     * @apiParam {String} text  回复内容.
+     *
+     * @apiSuccess {Integer} id 发表的评论的id.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": 32
+                },
+                "msg": ""
+            }
      */
     public function addCommentOnCollection()
     {

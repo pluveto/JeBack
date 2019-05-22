@@ -34,7 +34,7 @@ class SignFilter implements Filter
         $clientSign = \PhalApi\DI()->request->get('sign');
         $clientTimestamp = \PhalApi\DI()->request->get('timestamp');
         if (!(isset($clientUsername) && isset($clientSign) && isset($clientTimestamp))) {
-            throw new BadRequestException('普通请求必须至少提供以下参数: username, timestamp, sign');
+            throw new BadRequestException('普通需权请求, 必须至少提供以下参数: username, timestamp, sign');
         }
         if (time() - intval($clientTimestamp) > 30) {
             throw new BadRequestException('过期请求. 请检查客户端时间设置. 服务器时间戳为: ' . time());

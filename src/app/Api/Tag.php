@@ -135,11 +135,11 @@ class Comment extends Api
             throw new BadRequestException("曲谱不存在");
         }
         // 检查是否已经添加过关联
-        if (!$domain->checkRelationshipExist($this->tag_id, $this->score_id, 0)) {
+        if (!$domain->checkRelationshipExist($this->tag_id, $this->score_id, 1)) {
             throw new BadRequestException("已经添加过了");
         }
         //正式添加关联
-        $domain->addTagOnContent($this->tag_id, $this->score_id, 0);
+        $domain->addTagOnContent($this->tag_id, $this->score_id, 1);
     }
     /**
      * 获取曲谱的标签
@@ -154,7 +154,7 @@ class Comment extends Api
         if (!$scoreDomain->checkScoreExist($this->score_id)) {
             throw new BadRequestException("曲谱不存在");
         }
-        return $domain->packUpTagsOnContent($this->score_id, $this->page, $this->perpage, 0);
+        return $domain->packUpTagsOnContent($this->score_id, $this->page, $this->perpage, 1);
     }
 
     /**
@@ -170,7 +170,7 @@ class Comment extends Api
         if (!$scoreDomain->checkScoreExist($this->score_id)) {
             throw new BadRequestException("谱册不存在");
         }
-        return $domain->removeTagsOnContent($this->tag_id, $this->score_id, 0);
+        return $domain->removeTagsOnContent($this->tag_id, $this->score_id, 1);
     }
 
     /**
