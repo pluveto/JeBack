@@ -18,12 +18,11 @@ class Favorite
     {
         $model = new Model();
         $items = $model->getScoreFavoriteList($userId, $page, $perpage);
-        $rs = [];
-        $rs['items'] = $items;
-        $rs['total'] = $model->getScoreFavoriteCount($userId);
-        $rs['page'] = $page;
-        $rs['perpage'] =  $perpage;
-        return $rs;
+        $total = $model->getScoreFavoriteCount($userId);
+        $return = (new \App\Domain\Score())->prepareList($items, $total);
+        $return['page'] = $page;
+        $return['perpage'] =  $perpage;
+        return $return;
     }
     public function checkScoreHasAdded($scoreId)
     {
@@ -57,12 +56,11 @@ class Favorite
     {
         $model = new Model();
         $items = $model->getCollectionFavoriteList($userId, $page, $perpage);
-        $rs = [];
-        $rs['items'] = $items;
-        $rs['total'] = $model->getCollectionFavoriteCount($userId);
-        $rs['page'] = $page;
-        $rs['perpage'] =  $perpage;
-        return $rs;
+        $total = $model->getCollectionFavoriteCount($userId);
+        $return = (new \App\Domain\Collection())->prepareList($items, $total);
+        $return['page'] = $page;
+        $return['perpage'] =  $perpage;
+        return $return;
     }
     public function checkCollectionHasAdded($collectionId)
     {

@@ -81,16 +81,42 @@ class Score extends Api
      * @api {post} /score/add 添加曲谱
      * @apiDescription 添加曲谱.
      * @apiVersion 2.0.0
-     * @apiName name
+     * @apiName addScore
      * @apiPermission user
      * @apiGroup Score
      *
-     * @apiParam {Type} field  Field description.
+     * @apiParam {String} title  曲谱标题.
+     * @apiParam {String} addition  曲谱标题附加信息.  
+     * @apiParam {String} text  曲谱正文.
+     * @apiParam {Integer} [temp_image_id=0]  临时图片Id, 默认为0表示无配图.
+     * @apiParam {Array} [alias='[]']  别名列表(json纯文本数组), 默认为空数组[].
+     * @apiParam {String} [anime='单曲']  出处作品, 不填则默认为'单曲'.
+     * @apiParam {Enum} [key='C']  调性, 默认为'C', 取值范围:
+     * 
+            ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+     * @apiParam {Description} [description]  曲谱介绍.  
+     * @apiParamExample Request-Example:
+            'title': 'Test With Detail',
+            'text': '1 2 3 4 5 6 7',
+            'temp_image_id': img_id,
+            'alias': json.dumps(['Alias 1', 'Alias 2']),
+            'anime': 'Anime Name',
+            'key': 'C#',
+            'type': 0,
+            'description': 'Hello, world',
+            'addition': 'Some thing to append on title'
      *
      * @apiSuccess {Type} field Field description.
      *
      * @apiSuccessExample 成功响应:
-    json
+            {
+                "ret": 200,
+                "data": {
+                    "id": 150,
+                    "image_url": "http:\/\/...\/uploads\/images\/2019\/05\/22\/2b6e9bea199a5cdc8c9f93d59aaabed2.png"
+                },
+                "msg": ""
+            }
      */
     public function addScore()
     {
@@ -145,6 +171,46 @@ class Score extends Api
      * 更新曲谱
      * @routine /score/update
      * @return void
+     */
+    /**
+     * @api {post} /score/add 更新曲谱
+     * @apiDescription 更新曲谱.
+     * @apiVersion 2.0.0
+     * @apiName updateScore
+     * @apiPermission user
+     * @apiGroup Score
+     * @apiParam {Integer} id  曲谱id.
+     * @apiParam {String} title  曲谱标题.
+     * @apiParam {String} addition  曲谱标题附加信息.  
+     * @apiParam {String} text  曲谱正文.
+     * @apiParam {Integer} [temp_image_id]  临时图片Id, 默认为0表示无配图.
+     * @apiParam {Array} [alias]  别名列表(json纯文本数组), 默认为空数组[].
+     * @apiParam {String} [anime]  出处作品, 不填则默认为'单曲'.
+     * @apiParam {Enum} [key]  调性, 默认为'C', 取值范围:
+            'range' => ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+     * @apiParam {Description} [description]  曲谱介绍.  
+     * @apiParamExample Request-Example:
+            'title': 'Test With Detail',
+            'text': '1 2 3 4 5 6 7',
+            'temp_image_id': img_id,
+            'alias': json.dumps(['Alias 1', 'Alias 2']),
+            'anime': 'Anime Name',
+            'key': 'C#',
+            'type': 0,
+            'description': 'Hello, world',
+            'addition': 'Some thing to append on title'
+     *
+     * @apiSuccess {Type} field Field description.
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": 150,
+                    "image_url": "http:\/\/...\/uploads\/images\/2019\/05\/22\/01b736f5049218567daab1f2411253ba.png"
+                },
+                "msg": ""
+            }
      */
     public function updateScore()
     {
@@ -210,9 +276,22 @@ class Score extends Api
         return $return;
     }
     /**
-     * 删除曲谱
-     * @routine /score/remove
-     * @return void
+     * @api {post} /score/remove 删除曲谱
+     * @apiDescription 删除曲谱.
+     * @apiVersion 2.0.0
+     * @apiName removeScore
+     * @apiPermission user
+     * @apiGroup Score
+     *
+     * @apiParam {Integer} id  曲谱id.
+
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {},
+                "msg": ""
+            }
      */
     public function removeScore()
     {
@@ -236,9 +315,33 @@ class Score extends Api
         return [];
     }
     /**
-     * 获取曲谱
-     * @routine /score
-     * @return void
+     * @api {post} /score 获取曲谱
+     * @apiDescription 删除曲谱.
+     * @apiVersion 2.0.0
+     * @apiName getScore
+     * @apiPermission none
+     * @apiGroup Score
+     *
+     * @apiParam {Integer} id  曲谱id.
+
+     *
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "id": "150",
+                    "title": "Updated Test With Detail",
+                    "text": "Updated 1 2 3 4 5 6 7",
+                    "username": "pluvet",
+                    "alias": ["Updated", "Alias 2"],
+                    "anime": "Updated Anime Name",
+                    "key": "D",
+                    "description": "Updated Hello, world",
+                    "addition": "Updated Some thing to append on title",
+                    "image_url": "http:\/\/...\/uploads\/images\/2019\/05\/22\/01b736f5049218567daab1f2411253ba.png"
+                },
+                "msg": ""
+            }
      */
     public function getScore()
     {
@@ -256,6 +359,106 @@ class Score extends Api
      * @routine /score/list
      * @return void
      */
+    /**
+     * @api {post} /score/list 获取曲谱列表
+     * @apiDescription 获取曲谱列表, 按发布时间倒序排序.
+     * @apiVersion 2.0.0
+     * @apiName getScoreList
+     * @apiPermission none
+     * @apiGroup Score
+     *
+     * @apiParam {Integer} [page]  页码.
+     * @apiParam {Integer} [perpage]  每页数量.
+     *
+     * @apiSuccess {Array} items 列表数据项.
+     * @apiSuccess {Integer} total 列表数据项.
+     * @apiSuccess {Integer} page 页码.
+     * @apiSuccess {Integer} perpage 每页数量.
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "items": [{
+                        "id": "149",
+                        "title": "Test",
+                        "created_at": "1558500661",
+                        "updated_at": "1558500661",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "150",
+                        "title": "Updated Test With Detail",
+                        "created_at": "1558500661",
+                        "updated_at": "1558500662",
+                        "anime": "Updated Anime Name",
+                        "key": "D",
+                        "addition": "Updated Some thing to append on title",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "147",
+                        "title": "Test",
+                        "created_at": "1558500602",
+                        "updated_at": "1558500602",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "146",
+                        "title": "Test",
+                        "created_at": "1558500560",
+                        "updated_at": "1558500560",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "145",
+                        "title": "Test",
+                        "created_at": "1558500551",
+                        "updated_at": "1558500551",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "144",
+                        "title": "Test",
+                        "created_at": "1558500478",
+                        "updated_at": "1558500478",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "143",
+                        "title": "Test",
+                        "created_at": "1558500430",
+                        "updated_at": "1558500430",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "141",
+                        "title": "Test",
+                        "created_at": "1558500313",
+                        "updated_at": "1558500313",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }],
+                    "total": 8,
+                    "page": 1,
+                    "perpage": 10
+                },
+                "msg": ""
+            }
+     */
     public function getScoreList()
     {
 
@@ -263,9 +466,105 @@ class Score extends Api
         return $domain->packUpScoreList($this->page, $this->perpage);
     }
     /**
-     * 关键字搜索曲谱
-     * @routine /score/search
-     * @return void
+     * @api {post} /score/list 搜索曲谱
+     * @apiDescription 使用关键字搜索曲谱.
+     * @apiVersion 2.0.0
+     * @apiName searchScore
+     * @apiPermission none
+     * @apiGroup Score
+     *
+     * @apiParam {String} keyword  关键字.
+     * @apiParam {Integer} [page]  页码.
+     * @apiParam {Integer} [perpage]  每页数量.
+     *
+     * @apiSuccess {Array} items 列表数据项.
+     * @apiSuccess {Integer} total 列表数据项.
+     * @apiSuccess {Integer} page 页码.
+     * @apiSuccess {Integer} perpage 每页数量.
+     * @apiSuccessExample 成功响应:
+            {
+                "ret": 200,
+                "data": {
+                    "items": [{
+                        "id": "149",
+                        "title": "Test",
+                        "created_at": "1558500661",
+                        "updated_at": "1558500661",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "150",
+                        "title": "Updated Test With Detail",
+                        "created_at": "1558500661",
+                        "updated_at": "1558500662",
+                        "anime": "Updated Anime Name",
+                        "key": "D",
+                        "addition": "Updated Some thing to append on title",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "147",
+                        "title": "Test",
+                        "created_at": "1558500602",
+                        "updated_at": "1558500602",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "146",
+                        "title": "Test",
+                        "created_at": "1558500560",
+                        "updated_at": "1558500560",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "145",
+                        "title": "Test",
+                        "created_at": "1558500551",
+                        "updated_at": "1558500551",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "144",
+                        "title": "Test",
+                        "created_at": "1558500478",
+                        "updated_at": "1558500478",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "143",
+                        "title": "Test",
+                        "created_at": "1558500430",
+                        "updated_at": "1558500430",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }, {
+                        "id": "141",
+                        "title": "Test",
+                        "created_at": "1558500313",
+                        "updated_at": "1558500313",
+                        "anime": "单曲",
+                        "key": "C",
+                        "user_id": "1",
+                        "username": "pluvet"
+                    }],
+                    "total": 8,
+                    "page": 1,
+                    "perpage": 10
+                },
+                "msg": ""
+            }
      */
     public function searchScore()
     {

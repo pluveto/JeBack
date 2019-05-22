@@ -7,7 +7,7 @@ class Auth extends NotORM
 {
 
     private const NONCE_TABLE = "auth_nonce";
-    private const CAPTCH_TALBE = "auth_captch";
+    private const CAPTCH_TABLE = "auth_captch";
     private const GROUP_ACCESS_TABLE = "auth_group_access";
 
 
@@ -75,14 +75,14 @@ class Auth extends NotORM
      */
     public function insertCaptch($data)
     {
-        $table = self::CAPTCH_TALBE;
+        $table = self::CAPTCH_TABLE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         $ormCaptch->insert($data);
     }
 
     public function clearExpiredCaptch($type = 0)
     {
-        $table = self::CAPTCH_TALBE;
+        $table = self::CAPTCH_TABLE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         // 删除过期 15 分钟的.
         $ormCaptch->where('created_at < ?', time() - 900)->where('type', $type)->delete();
@@ -96,7 +96,7 @@ class Auth extends NotORM
      */
     public function clearUserCaptch(string $title, int $type)
     {
-        $table = self::CAPTCH_TALBE;
+        $table = self::CAPTCH_TABLE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         // 删除过期 15 分钟的.
         $ormCaptch->where('title', $title)->where('type', $type)->delete();
@@ -119,7 +119,7 @@ class Auth extends NotORM
      */
     public function getLastCaptch($type, $title)
     {
-        $table = self::CAPTCH_TALBE;
+        $table = self::CAPTCH_TABLE;
         $ormCaptch = \PhalApi\DI()->notorm->$table;
         return $ormCaptch->where('created_at > ?', time() - 900)
             ->where('type', $type)

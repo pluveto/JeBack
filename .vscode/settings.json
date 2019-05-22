@@ -1,3 +1,18 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "cSpell.words": [
+        "Bipubipu",
+        "CAPTCH",
+        "HHVM",
+        "Phal",
+        "Pluveto",
+        "Zhang",
+        "Zijing",
+        "classmap",
+        "filepath",
+        "moeje",
+        "notorm",
+        "perpage",
+        "pluvet"
+    ]
 }

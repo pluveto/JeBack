@@ -18,7 +18,7 @@ class Collection extends Api
     {
         return array(
             'addCollection' => array(
-                'temp_image_id' => ['name' => 'temp_image_id', 'require' => false, 'min' => 0, 'max' => 255, 'type' => 'int', 'default' => 0], // 图片 id 为零表示不指定id
+                'temp_image_id' => ['name' => 'temp_image_id', 'require' => false, 'min' => 0,  'type' => 'int', 'default' => 0], // 图片 id 为零表示不指定id
                 'title' => array('name' => 'title'),
                 'description' => array('name' => 'description')
             ),
@@ -31,11 +31,13 @@ class Collection extends Api
             ),
             'search' => array(
                 'title' => array('name' => 'title'),
-                'collectionId' => array('name' => 'collectionId')
+                'collectionId' => array('name' => 'collectionId'),
+                'page' => array('name' => 'page'),
+                'pageSize' => array('name' => 'pageSize'),
             ),
             'update' => array(
                 'collectionId' => array('name' => 'collectionId'),
-                'temp_image_id' => ['name' => 'temp_image_id', 'require' => false, 'min' => 0, 'max' => 255, 'type' => 'int', 'default' => 0], // 图片 id 为零表示不指定id
+                'temp_image_id' => ['name' => 'temp_image_id', 'require' => false, 'min' => 0, 'type' => 'int', 'default' => 0], // 图片 id 为零表示不指定id
                 'title' => array('name' => 'title'),
                 'description' => array('name' => 'description')
             ),

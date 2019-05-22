@@ -124,7 +124,9 @@ class Score
         // 已经2019-5-19 01:36:10了, 肝不动了, 
         // 但是一听到废狱摇篮曲的旋律, 突然又有了写代码的动力
         foreach ($items as &$item) {
-            $item['image_url'] =  $uploadDomain->getUrlBasedOnPath($item['image_path']);
+            if (array_key_exists('image_path', $item)) {
+                $item['image_url'] =  $uploadDomain->getUrlBasedOnPath($item['image_path']);
+            }
             $item['image_id'] = null;
             $item = array_filter($item);
         }
@@ -169,7 +171,8 @@ class Score
             'type'          => $score['type'],
             'description'   => $score['description'],
             'addition'      => $score['addition'],
-            'image_url'     => $uploadDomain->getUrlBasedOnPath($score['image_path']),
+            'image_url'     =>
+            $score['image_path'] ? $uploadDomain->getUrlBasedOnPath($score['image_path']) : '',
         ));
     }
 }

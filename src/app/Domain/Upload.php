@@ -47,20 +47,16 @@ class Upload
         $newPath = \App\Helper\Path::getImageDir()   . '/' . basename($tempImage['path']);
         rename($oldPath, $newPath);
         $model->removeTempImage($tempId);
-        $relativePathOfnewPath = \App\Helper\Path::getRelativePathToPublic($newPath);
+        $relativePathOfNewPath = \App\Helper\Path::getRelativePathToPublic($newPath);
         $id =  intval($model->insert([
-            'path' => $relativePathOfnewPath,
+            'path' => $relativePathOfNewPath,
             'user_id' => \App\Domain\Auth::$currentUser['id'],
             'type' => $type, // 0 曲谱 , 1 谱册
             'created_at' => time(),
         ]));
         // 减少查询次数的优化
-        if ($imageUrl != null) {
-            $imageUrl = $this->getUrlBasedOnPath($relativePathOfnewPath);
-        }
-        if ($imageNewPath != null) {
-            $imageNewPath = $relativePathOfnewPath;
-        }
+        $imageUrl = $this->getUrlBasedOnPath($relativePathOfNewPath);
+        $imageNewPath = $relativePathOfNewPath;
         return $id;
     }
     /**
@@ -127,7 +123,7 @@ class Upload
      * 保存临时图片文件, 如果路径不存在则试图创建
      * @todo: 编写定期清理临时文件的代码
      * @param array $file
-     * @return mixed 成功时返回含有 ID 和 key 和 url 的数组, 失败时返回含有 ERRORMESSAGE 的数组
+     * @return mixed 成功时返回含有 ID 和 key 和 url 的数组, 失败时返回含有 错误信息 的数组
      */
     public function saveTempImageFile($file)
     {

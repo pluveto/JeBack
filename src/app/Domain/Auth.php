@@ -64,7 +64,7 @@ class Auth
      *      查询用户在哪个组, 查询这个组对应了哪些规则, 对于每条数据库中存的规则:
      *          如果规则设置了 condition:
      *              把condition中的{xxx}格式的字符串替换为用户的xxx字段, 即user['xxx']
-     *              然后把condition解析为php代码, 添加到内存的规则列表
+     *              然后把 condition 解析为php代码, 添加到内存的规则列表
      *          如果规则没设置 condition
      *              直接向规则列表添加服务名
      *      如果用户满足规则中的任何一条, 返回true(默认)
@@ -140,11 +140,11 @@ class Auth
     }
 
     /**
-     * 生成 Nounce, 同时删除过期的 Nonce
+     * 生成 Nonce, 同时删除过期的 Nonce
      *
      * @return string nonce
      */
-    public function prepareNounce()
+    public function prepareNonce()
     {
         $model = new Model();
         $model->clearExpiredNonce();

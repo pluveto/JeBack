@@ -37,8 +37,8 @@ class Collection extends NotORM
      */
     public function addScoreToCollection($data)
     {
-        $tabel = self::RELATIONSHIP;
-        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        $table = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$table;
         return $ormCollection->insert($data);
     }
 
@@ -49,8 +49,8 @@ class Collection extends NotORM
      */
     public function addScoresToCollection($data)
     {
-        $tabel = self::RELATIONSHIP;
-        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        $table = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$table;
         return $ormCollection->insert_multi($data);
     }
 
@@ -115,8 +115,8 @@ class Collection extends NotORM
      */
     public function getScoreIdByCollectionId($collectionId)
     {
-        $tabel = self::RELATIONSHIP;
-        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        $table = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$table;
         return $ormCollection->select('score_id')
             ->where('collection_id', $collectionId)
             ->fetchAll();
@@ -131,13 +131,13 @@ class Collection extends NotORM
     public function update($data)
     {
         //开启事物
-        // $tabel = self::RELATIONSHIP;
+        // $table = self::RELATIONSHIP;
 
         // \PhalApi\DI()->notorm->beginTransaction('db_master');
-        // $add = \PhalApi\DI()->notorm->$tabel->insert_multi($addScore);
-        // $delete = \PhalApi\DI()->notorm->$tabel->insert_multi($addScore);
-        $tabel = self::RELATIONSHIP;
-        $ormCollection = \PhalApi\DI()->notorm->$tabel;
+        // $add = \PhalApi\DI()->notorm->$table->insert_multi($addScore);
+        // $delete = \PhalApi\DI()->notorm->$table->insert_multi($addScore);
+        $table = self::RELATIONSHIP;
+        $ormCollection = \PhalApi\DI()->notorm->$table;
 
         return $ormCollection->where('id', $data['id'])->update($data);
     }

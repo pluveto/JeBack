@@ -17,6 +17,7 @@ currentFileName = getframeinfo(cf).filename
 testNum = 0
 testPassNum = 0
 
+
 def getNum():
     global testNum
     testNum += 1
@@ -82,7 +83,7 @@ res = requests.post(baseUrl + api, data={
     'text': '1 2 3 4 5 6 7'
 }, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-# log.response(jsonRaw, 1)
+log.response(jsonRaw, 1)
 try:
     jsonObj = json.loads(jsonRaw)
     jsonPass = True
@@ -95,7 +96,7 @@ if jsonPass:
     log.info("id: " + str(jsonObj['data']['id']), 1)
     if 'id' in jsonObj['data']:
         log.success('测试通过\n', 1)
-        testPassNum+=1
+        testPassNum += 1
 
 
 timestamp = time.time()
@@ -113,7 +114,7 @@ with open(os.path.join(dirname, 'assets/google.png'), 'rb') as pngfile:
                         },
                         files={'file': ('google.png', pngfile, 'image/png')}, allow_redirects=False)
 jsonRaw = jsbeautifier.beautify(res.text)
-##log.response(jsonRaw, 1)
+log.response(jsonRaw, 1)
 jsonPass = False
 try:
     jsonObj = json.loads(jsonRaw)
@@ -130,7 +131,7 @@ if jsonPass:
         log.info("id: " + str(jsonObj['data']['id']), 1)
         img_id = jsonObj['data']['id']
         log.success('测试通过\n', 1)
-        testPassNum+=1
+        testPassNum += 1
 
 
 timestamp = time.time()
@@ -300,7 +301,6 @@ if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     #log.info("data: " + str(jsonObj['data']), 1)
 
-    
     log.success('测试通过\n', 1)
     testPassNum += 1
 
@@ -329,7 +329,6 @@ except:
 if jsonPass:
     log.info("ret: " + str(jsonObj['ret']), 1)
     #log.info("data: " + str(jsonObj['data']), 1)
-
 
     log.success('测试通过\n', 1)
     testPassNum += 1

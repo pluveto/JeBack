@@ -21,11 +21,11 @@ class Favorite extends NotORM
             ->where('content_id', $scoreId)
             ->where('type', '0')->fetchOne();
     }
-    public function getByUserAndCollection($userId, $colletionId)
+    public function getByUserAndCollection($userId, $collectionId)
     {
         return $this->getORM()
             ->where('user_id', $userId)
-            ->where('content_id', $colletionId)
+            ->where('content_id', $collectionId)
             ->where('type', '1')->fetchOne();
     }
     public function getScoreFavoriteList($userId, $page, $perpage)

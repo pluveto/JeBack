@@ -137,7 +137,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/auth/logout",
-    "title": "用户退出登录",
+    "title": "退出登录",
     "description": "<p>退出登录, 并清除登录凭据(token).</p>",
     "version": "2.0.0",
     "name": "logout",
@@ -162,7 +162,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/auth/register/email",
-    "title": "用户邮箱注册",
+    "title": "邮箱注册",
     "description": "<p>注册时, 请求体将不可避免地用明文传参.所以建议开启SSL.</p>",
     "version": "2.0.0",
     "permission": [
@@ -535,5 +535,805 @@ define({ "api": [
     },
     "filename": "src/app/Api/Comment.php",
     "groupTitle": "Comment"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/collection/add",
+    "title": "收藏谱册",
+    "description": "<p>收藏谱册.</p>",
+    "version": "2.0.0",
+    "name": "addFavoriteCollection",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "collection_id",
+            "description": "<p>谱册id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>该收藏项的id.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"id\": 32\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/score/add",
+    "title": "收藏曲谱",
+    "description": "<p>收藏曲谱.</p>",
+    "version": "2.0.0",
+    "name": "addFavoriteScore",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "score_id",
+            "description": "<p>曲谱id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>该收藏项的id.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"id\": 52\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/collection/list",
+    "title": "获取用户收藏的谱册",
+    "description": "<p>列出用户收藏的谱册.</p>",
+    "version": "2.0.0",
+    "name": "listFavoriteCollection",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "items",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "total",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/score/list",
+    "title": "获取用户收藏的曲谱",
+    "description": "<p>列出用户收藏的曲谱.</p>",
+    "version": "2.0.0",
+    "name": "listFavoriteScore",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>用户id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "items",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "total",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"items\": [{\n            \"id\": \"149\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500661\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"150\",\n            \"title\": \"Updated Test With Detail\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500662\",\n            \"anime\": \"Updated Anime Name\",\n            \"key\": \"D\",\n            \"addition\": \"Updated Some thing to append on title\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"147\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500602\",\n            \"updated_at\": \"1558500602\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"146\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500560\",\n            \"updated_at\": \"1558500560\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"145\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500551\",\n            \"updated_at\": \"1558500551\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"144\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500478\",\n            \"updated_at\": \"1558500478\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"143\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500430\",\n            \"updated_at\": \"1558500430\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"141\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500313\",\n            \"updated_at\": \"1558500313\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }],\n        \"total\": 8,\n        \"page\": 1,\n        \"perpage\": 10\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/collection/remove",
+    "title": "移除对谱册的收藏",
+    "description": "<p>移除对谱册的收藏.</p>",
+    "version": "2.0.0",
+    "name": "removeFavoriteCollection",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "collection_id",
+            "description": "<p>曲谱id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {},\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/favorite/score/remove",
+    "title": "移除对曲谱的收藏",
+    "description": "<p>移除对曲谱的收藏.</p>",
+    "version": "2.0.0",
+    "name": "removeFavoriteScore",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Favorite",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "score_id",
+            "description": "<p>曲谱id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {},\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Favorite.php",
+    "groupTitle": "Favorite"
+  },
+  {
+    "type": "post",
+    "url": "/score/add",
+    "title": "添加曲谱",
+    "description": "<p>添加曲谱.</p>",
+    "version": "2.0.0",
+    "name": "addScore",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>曲谱标题.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addition",
+            "description": "<p>曲谱标题附加信息.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "text",
+            "description": "<p>曲谱正文.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "temp_image_id",
+            "defaultValue": "0",
+            "description": "<p>临时图片Id, 默认为0表示无配图.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": true,
+            "field": "alias",
+            "defaultValue": "[]",
+            "description": "<p>别名列表(json纯文本数组), 默认为空数组[].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "anime",
+            "defaultValue": "单曲",
+            "description": "<p>出处作品, 不填则默认为'单曲'.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Enum",
+            "optional": true,
+            "field": "key",
+            "defaultValue": "C",
+            "description": "<p>调性, 默认为'C', 取值范围:</p> <pre><code>        ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']</code></pre>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Description",
+            "optional": true,
+            "field": "description",
+            "description": "<p>曲谱介绍.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "'title': 'Test With Detail',\n'text': '1 2 3 4 5 6 7',\n'temp_image_id': img_id,\n'alias': json.dumps(['Alias 1', 'Alias 2']),\n'anime': 'Anime Name',\n'key': 'C#',\n'type': 0,\n'description': 'Hello, world',\n'addition': 'Some thing to append on title'",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Type",
+            "optional": false,
+            "field": "field",
+            "description": "<p>Field description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"id\": 150,\n        \"image_url\": \"http:\\/\\/...\\/uploads\\/images\\/2019\\/05\\/22\\/2b6e9bea199a5cdc8c9f93d59aaabed2.png\"\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
+  },
+  {
+    "type": "post",
+    "url": "/score",
+    "title": "获取曲谱",
+    "description": "<p>删除曲谱.</p>",
+    "version": "2.0.0",
+    "name": "getScore",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>曲谱id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"id\": \"150\",\n        \"title\": \"Updated Test With Detail\",\n        \"text\": \"Updated 1 2 3 4 5 6 7\",\n        \"username\": \"pluvet\",\n        \"alias\": [\"Updated\", \"Alias 2\"],\n        \"anime\": \"Updated Anime Name\",\n        \"key\": \"D\",\n        \"description\": \"Updated Hello, world\",\n        \"addition\": \"Updated Some thing to append on title\",\n        \"image_url\": \"http:\\/\\/...\\/uploads\\/images\\/2019\\/05\\/22\\/01b736f5049218567daab1f2411253ba.png\"\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
+  },
+  {
+    "type": "post",
+    "url": "/score/list",
+    "title": "获取曲谱列表",
+    "description": "<p>获取曲谱列表, 按发布时间倒序排序.</p>",
+    "version": "2.0.0",
+    "name": "getScoreList",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "items",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "total",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"items\": [{\n            \"id\": \"149\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500661\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"150\",\n            \"title\": \"Updated Test With Detail\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500662\",\n            \"anime\": \"Updated Anime Name\",\n            \"key\": \"D\",\n            \"addition\": \"Updated Some thing to append on title\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"147\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500602\",\n            \"updated_at\": \"1558500602\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"146\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500560\",\n            \"updated_at\": \"1558500560\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"145\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500551\",\n            \"updated_at\": \"1558500551\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"144\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500478\",\n            \"updated_at\": \"1558500478\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"143\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500430\",\n            \"updated_at\": \"1558500430\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"141\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500313\",\n            \"updated_at\": \"1558500313\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }],\n        \"total\": 8,\n        \"page\": 1,\n        \"perpage\": 10\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
+  },
+  {
+    "type": "post",
+    "url": "/score/remove",
+    "title": "删除曲谱",
+    "description": "<p>删除曲谱.</p>",
+    "version": "2.0.0",
+    "name": "removeScore",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>曲谱id.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {},\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
+  },
+  {
+    "type": "post",
+    "url": "/score/list",
+    "title": "搜索曲谱",
+    "description": "<p>使用关键字搜索曲谱.</p>",
+    "version": "2.0.0",
+    "name": "searchScore",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>关键字.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "items",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "total",
+            "description": "<p>列表数据项.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "page",
+            "description": "<p>页码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "perpage",
+            "description": "<p>每页数量.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"items\": [{\n            \"id\": \"149\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500661\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"150\",\n            \"title\": \"Updated Test With Detail\",\n            \"created_at\": \"1558500661\",\n            \"updated_at\": \"1558500662\",\n            \"anime\": \"Updated Anime Name\",\n            \"key\": \"D\",\n            \"addition\": \"Updated Some thing to append on title\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"147\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500602\",\n            \"updated_at\": \"1558500602\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"146\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500560\",\n            \"updated_at\": \"1558500560\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"145\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500551\",\n            \"updated_at\": \"1558500551\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"144\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500478\",\n            \"updated_at\": \"1558500478\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"143\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500430\",\n            \"updated_at\": \"1558500430\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }, {\n            \"id\": \"141\",\n            \"title\": \"Test\",\n            \"created_at\": \"1558500313\",\n            \"updated_at\": \"1558500313\",\n            \"anime\": \"单曲\",\n            \"key\": \"C\",\n            \"user_id\": \"1\",\n            \"username\": \"pluvet\"\n        }],\n        \"total\": 8,\n        \"page\": 1,\n        \"perpage\": 10\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
+  },
+  {
+    "type": "post",
+    "url": "/score/add",
+    "title": "更新曲谱",
+    "description": "<p>更新曲谱.</p>",
+    "version": "2.0.0",
+    "name": "updateScore",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "group": "Score",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>曲谱id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>曲谱标题.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addition",
+            "description": "<p>曲谱标题附加信息.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "text",
+            "description": "<p>曲谱正文.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "temp_image_id",
+            "description": "<p>临时图片Id, 默认为0表示无配图.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": true,
+            "field": "alias",
+            "description": "<p>别名列表(json纯文本数组), 默认为空数组[].</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "anime",
+            "description": "<p>出处作品, 不填则默认为'单曲'.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Enum",
+            "optional": true,
+            "field": "key",
+            "description": "<p>调性, 默认为'C', 取值范围: 'range' =&gt; ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Description",
+            "optional": true,
+            "field": "description",
+            "description": "<p>曲谱介绍.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "'title': 'Test With Detail',\n'text': '1 2 3 4 5 6 7',\n'temp_image_id': img_id,\n'alias': json.dumps(['Alias 1', 'Alias 2']),\n'anime': 'Anime Name',\n'key': 'C#',\n'type': 0,\n'description': 'Hello, world',\n'addition': 'Some thing to append on title'",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Type",
+            "optional": false,
+            "field": "field",
+            "description": "<p>Field description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "成功响应:",
+          "content": "{\n    \"ret\": 200,\n    \"data\": {\n        \"id\": 150,\n        \"image_url\": \"http:\\/\\/...\\/uploads\\/images\\/2019\\/05\\/22\\/01b736f5049218567daab1f2411253ba.png\"\n    },\n    \"msg\": \"\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/app/Api/Score.php",
+    "groupTitle": "Score"
   }
 ] });

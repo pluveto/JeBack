@@ -82,7 +82,7 @@ class Auth extends Api
     {
         $domain = new Domain();
         // 生成 nonce
-        $nonce = $domain->prepareNounce();
+        $nonce = $domain->prepareNonce();
         return array(
             'nonce' => $nonce,
         );
@@ -93,7 +93,7 @@ class Auth extends Api
      * 
      * 登录过程:
      * 
-     * 1. 用户从服务器获取一个随机串 nonce。服务器保存 nouce+timestamp
+     * 1. 用户从服务器获取一个随机串 nonce。服务器保存 nonce+timestamp
      * 2. 用户计算 sign = sha1(nonce.email.sha1('moeje'.password)).
      *    注意: 此处的 sign 为登录专用, 其它请求的 sign 的算法为: sha1(timestamp + username + token)
      * 3. 提交 sign, email, nonce
@@ -153,7 +153,7 @@ class Auth extends Api
         $domain->setUpTokenByEmail($this->email, $this->nonce);
         $userDomain = new \App\Domain\User();
         $userInfo = $userDomain->getUserInfoByEmail($this->email);
-        // 注意: userinfo中不得传递密码(即使是摘要密码)
+        // 注意: userInfo中不得传递密码(即使是摘要密码)
         return $userInfo;
     }
     /**
@@ -214,7 +214,7 @@ class Auth extends Api
      * @return void
      */
     /**
-     * @api {post} /auth/register/email 用户邮箱注册
+     * @api {post} /auth/register/email 邮箱注册
      * @apiDescription 注册时, 请求体将不可避免地用明文传参.所以建议开启SSL.
      * @apiVersion 2.0.0
      * @apiPermission none
@@ -274,7 +274,7 @@ class Auth extends Api
 
 
     /**
-     * @api {post} /auth/logout 用户退出登录
+     * @api {post} /auth/logout 退出登录
      * @apiDescription 退出登录, 并清除登录凭据(token).
      * @apiVersion 2.0.0
      * @apiName logout
