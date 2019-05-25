@@ -139,12 +139,12 @@ return array(
             ['POST', '/favorite/score/remove', 'favorite.removeFavoriteScore'],
 
             // 9. favorite of collection
-            ['POST', '/favorite/colletion/add', 'favorite.addFavoriteCollection'],
-            [['POST', 'GET'], '/favorite/colletion/list', 'favorite.listFavoriteCollection'],
-            ['POST', '/favorite/colletion/remove', 'favorite.removeFavoriteCollection'],
+            ['POST', '/favorite/collection/add', 'favorite.addFavoriteCollection'],
+            [['POST', 'GET'], '/favorite/collection/list', 'favorite.listFavoriteCollection'],
+            ['POST', '/favorite/collection/remove', 'favorite.removeFavoriteCollection'],
 
             // 10. follow
-            ['POST', '/follow/list/follwing', 'follow.getFollowingByUser'],
+            ['POST', '/follow/list/following', 'follow.getFollowingByUser'],
             ['POST', '/follow/list/follower', 'follow.getFollowerByUser'],
             ['POST', '/follow/add', 'follow.addFollow'],
             ['POST', '/follow/remove', 'follow.removeFollow'],

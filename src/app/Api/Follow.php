@@ -12,7 +12,7 @@ use \App\Domain\Follow as Domain;
  * 关注列表操作类
  * 
  * @author Ricardo2001zg <miao@ricardo2001zg.moe> 2019-5-17
- * Domain层checkUserExist与getFollowingByUser未完成
+ * Domain 层checkUserExist s与getFollowingByUser未完成
  */
 
 class Follow extends Api

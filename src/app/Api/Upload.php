@@ -56,6 +56,21 @@ class Upload extends Api
      * @return int id 临时图片 id
      * @return string nonce 校验随机串
      */
+    /**
+     * @api {post} /upload/image Description
+     * @apiDescription text.
+     * @apiVersion 2.0.0
+     * @apiName name
+     * @apiPermission user
+     * @apiGroup Group
+     *
+     * @apiParam {Type} field  Field description.
+     *
+     * @apiSuccess {Type} field Field description.
+     *
+     * @apiSuccessExample 成功响应:
+    json
+     */
     public function uploadImage()
     {
         $domain = new Domain();
